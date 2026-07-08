@@ -1,24 +1,26 @@
-/* Karyo-Quill — Redesigned clinical dark mode
-   Deep navy/slate with a confident accent. Proper hierarchy and depth. */
+/* Karyo-Quill — Premium AI Operating System UI Redesign
+   Deep navy background with floating gradients, premium neon accents, and smooth feedback animations. */
 
 :root {
-  --quill-bg: #0f172a;       /* slate-900 */
-  --quill-card: #1e293b;     /* slate-800 */
-  --quill-ink: #f8fafc;      /* slate-50 */
-  --quill-body: #94a3b8;     /* slate-400 */
-  --quill-muted: #64748b;    /* slate-500 */
-  --quill-accent: #0ea5e9;   /* sky-500 */
-  --quill-accent-hover: #0284c7; /* sky-600 */
-  --quill-accent-soft: rgba(14, 165, 233, 0.15);
-  --quill-amber: #f59e0b;
-  --quill-red: #ef4444;      /* red-500 */
-  --quill-border: #334155;   /* slate-700 */
-  --quill-border-focus: #475569; /* slate-600 */
+  --quill-bg: #0B1220;         /* deep navy */
+  --quill-card: #182434;       /* card blue-grey */
+  --quill-ink: #FFFFFF;        /* high contrast white */
+  --quill-body: #94A3B8;       /* slate-400 */
+  --quill-muted: #64748B;      /* slate-500 */
+  --quill-accent: #28B6FF;     /* neon primary blue */
+  --quill-accent-hover: #7DD3FC; /* soft accent blue */
+  --quill-accent-soft: rgba(40, 182, 255, 0.12);
+  --quill-amber: #F59E0B;      /* warning */
+  --quill-red: #EF4444;        /* danger */
+  --quill-border: rgba(255, 255, 255, 0.08);
+  --quill-border-focus: rgba(40, 182, 255, 0.35);
+  --quill-green: #22C55E;      /* success */
 }
 
 body {
   background-color: var(--quill-bg);
   color: var(--quill-ink);
+  overflow-x: hidden;
 }
 
 .quill-app {
@@ -26,11 +28,6 @@ body {
   color: var(--quill-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "cv11" 1, "ss01" 1, "ss03" 1;
-}
-
-.font-display {
-  font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .quill-app textarea,
@@ -41,40 +38,54 @@ body {
 
 /* Custom Selection */
 .quill-app ::selection {
-  background: var(--quill-accent-soft);
-  color: var(--quill-ink);
+  background: rgba(40, 182, 255, 0.25);
+  color: #FFFFFF;
 }
 
 .quill-app *:focus-visible {
   outline: none;
 }
 
-/* Card & Surface treatments with depth */
-.quill-card {
-  background: var(--quill-card);
-  border: 1px solid var(--quill-border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+/* Glassmorphism treatment */
+.glass-panel {
+  background: rgba(24, 36, 52, 0.55) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 20px;
 }
 
-/* Primary Generate Button (Redesigned) */
+/* Card & Surface treatments with depth */
+.quill-card {
+  background: rgba(24, 36, 52, 0.55);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium Glow & Button */
 .quill-primary {
-  background-color: var(--quill-accent) !important;
+  background: linear-gradient(135deg, #28B6FF 0%, #009DF0 100%) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(40, 182, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 12px;
 }
 .quill-primary:hover:not(:disabled) {
-  background-color: var(--quill-accent-hover) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #7DD3FC 0%, #28B6FF 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(40, 182, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 .quill-primary:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(40, 182, 255, 0.3);
 }
 .quill-primary:disabled {
-  background-color: var(--quill-border) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   color: var(--quill-muted) !important;
   cursor: not-allowed;
   box-shadow: none;
@@ -82,25 +93,29 @@ body {
   border-color: transparent !important;
 }
 
-/* Loading spinner */
-.quill-spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
-  animation: quill-spin 700ms linear infinite;
+/* AI Connected badge pulse */
+@keyframes green-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
 }
-@keyframes quill-spin {
-  to { transform: rotate(360deg); }
+
+.pulse-green-dot {
+  animation: green-pulse 2.2s infinite;
 }
 
 /* Staggered card reveal */
 .quill-stagger {
   opacity: 0;
-  transform: translateY(8px);
-  animation: quill-rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  transform: translateY(12px);
+  animation: quill-rise 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 @keyframes quill-rise {
   to {
@@ -109,106 +124,106 @@ body {
   }
 }
 
-/* ----------------------------------------------------------- */
-/* Mic recorder */
-/* ----------------------------------------------------------- */
+/* Mic recorder styling */
 .quill-mic-wrap {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 5;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .quill-mic-btn {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--quill-card);
-  border: 1px solid var(--quill-border);
+  background: rgba(24, 36, 52, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--quill-body);
   cursor: pointer;
-  transition: all 160ms ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding: 0;
 }
 .quill-mic-btn:hover:not(:disabled) {
   color: var(--quill-accent);
-  border-color: var(--quill-border-focus);
-  background: var(--quill-border);
+  border-color: rgba(40, 182, 255, 0.4);
+  background: rgba(40, 182, 255, 0.08);
+  transform: scale(1.05);
 }
 .quill-mic-btn:active:not(:disabled) {
   transform: scale(0.94);
 }
 .quill-mic-btn:disabled {
   cursor: not-allowed;
-  opacity: 0.65;
+  opacity: 0.5;
 }
 .quill-mic-btn-recording {
   background: var(--quill-red) !important;
   border-color: var(--quill-red) !important;
   color: #ffffff !important;
-  animation: quill-mic-pulse 1.6s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5) !important;
 }
 .quill-mic-btn-recording:hover {
-  background: #dc2626 !important; /* slightly darker red */
+  background: #dc2626 !important;
 }
 .quill-mic-btn-transcribing {
   color: var(--quill-accent);
   border-color: var(--quill-accent);
   background: var(--quill-accent-soft);
 }
-@keyframes quill-mic-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.45); }
-  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+.quill-mic-icon { width: 18px; height: 18px; }
+.quill-mic-icon-spin {
+  animation: spin-loader 1s linear infinite;
 }
-.quill-mic-icon { width: 16px; height: 16px; }
-.quill-mic-icon-spin { animation: quill-spin 700ms linear infinite; }
+@keyframes spin-loader {
+  to { transform: rotate(360deg); }
+}
 
 .quill-mic-timer {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--quill-card);
-  border: 1px solid var(--quill-border);
-  color: var(--quill-ink);
-  padding: 4px 10px;
+  gap: 8px;
+  background: rgba(24, 36, 52, 0.95);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #FFFFFF;
+  padding: 6px 14px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
 }
 .quill-mic-pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--quill-red);
-  animation: quill-blink 1s ease-in-out infinite;
+  animation: pulse-red-dot 1.2s ease-in-out infinite;
 }
-@keyframes quill-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+@keyframes pulse-red-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.15); }
 }
 .quill-mic-warn {
   display: inline-flex;
   align-items: center;
-  background: rgba(245, 158, 11, 0.14);
+  background: rgba(245, 158, 11, 0.12);
   color: var(--quill-amber);
-  padding: 4px 10px;
+  padding: 6px 14px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 @media (max-width: 480px) {
-  .quill-mic-wrap { top: 8px; right: 8px; gap: 6px; }
-  .quill-mic-btn { width: 36px; height: 36px; }
+  .quill-mic-wrap { top: 10px; right: 10px; gap: 8px; }
+  .quill-mic-btn { width: 38px; height: 38px; }
 }
 
 /* ----------------------------------------------------------- */
@@ -257,17 +272,20 @@ body {
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .quill-app-header {
-  height: 60px;
+  height: 70px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  background: var(--quill-card);
-  border-bottom: 1px solid var(--quill-border);
+  padding: 0 28px;
+  background: rgba(24, 36, 52, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 20;
 }
 
@@ -275,37 +293,128 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .quill-sidebar {
-  width: 260px;
+  width: 290px;
   flex-shrink: 0;
-  background: var(--quill-bg);
-  border-right: 1px solid var(--quill-border);
+  background: rgba(11, 18, 32, 0.85);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
-  padding: 20px 16px;
+  padding: 24px 20px;
   overflow-y: auto;
+  z-index: 5;
 }
 
 .quill-main {
   flex: 1;
   overflow-y: auto;
-  padding: 32px;
-  background: var(--quill-bg);
+  padding: 36px 40px;
+  background: transparent;
+  z-index: 5;
 }
 
-.quill-sidebar-item {
+.quill-sidebar-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(24, 36, 52, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quill-sidebar-card:hover {
+  transform: translateY(-2px);
+  background: rgba(24, 36, 52, 0.85);
+  border-color: rgba(40, 182, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.quill-sidebar-card.selected {
+  background: rgba(40, 182, 255, 0.06);
+  border-color: var(--quill-accent);
+  box-shadow: 0 0 15px rgba(40, 182, 255, 0.15);
+}
+
+/* Redesigned New Note button styling */
+.quill-new-note-btn {
+  background: linear-gradient(135deg, #28B6FF 0%, #009DF0 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(40, 182, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 12px;
+}
+.quill-new-note-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(40, 182, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.quill-new-note-btn:active {
+  transform: scale(0.98);
+}
+
+/* Audio Waveform recording indicator */
+.audio-waveform {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 4px;
-  cursor: pointer;
-  transition: background-color 150ms ease;
+  gap: 3px;
+  height: 20px;
+  padding: 0 8px;
+}
+.audio-waveform-bar {
+  width: 3px;
+  height: 4px;
+  background-color: var(--quill-red);
+  border-radius: 3px;
+  animation: waveform-jump 0.8s ease-in-out infinite alternate;
+}
+.audio-waveform-bar:nth-child(2) { animation-delay: 0.1s; }
+.audio-waveform-bar:nth-child(3) { animation-delay: 0.25s; }
+.audio-waveform-bar:nth-child(4) { animation-delay: 0.4s; }
+.audio-waveform-bar:nth-child(5) { animation-delay: 0.15s; }
+.audio-waveform-bar:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes waveform-jump {
+  0% { height: 4px; }
+  100% { height: 18px; }
 }
 
-.quill-sidebar-item:hover {
-  background: var(--quill-card);
+/* Timeline animations styles */
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  opacity: 0.25;
+  transition: all 400ms ease;
+}
+.timeline-item.active {
+  opacity: 1;
+  color: var(--quill-accent);
+}
+.timeline-item.completed {
+  opacity: 0.85;
+  color: var(--quill-green);
+}
+
+/* Circular Confidence Indicators */
+.confidence-dial {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+/* Section Card Typewriter Reveal style */
+.typewriter-text {
+  border-right: 2px solid var(--quill-accent);
+  animation: blink-cursor 0.75s step-end infinite;
+}
+@keyframes blink-cursor {
+  from, to { border-color: transparent }
+  50% { border-color: var(--quill-accent); }
 }

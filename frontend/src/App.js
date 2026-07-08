@@ -7,6 +7,8 @@ import { InputScreen } from "./components/InputScreen";
 import { ResultScreen } from "./components/ResultScreen";
 import { PrintView } from "./components/PrintView";
 import { Sidebar } from "./components/Sidebar";
+import { BackgroundNetwork } from "./components/BackgroundNetwork";
+import { LoadingScreen } from "./components/LoadingScreen";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 const API = `${BACKEND_URL}/api`;
@@ -135,6 +137,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [approved, setApproved] = useState(false);
   const [micEnabled, setMicEnabled] = useState(false);
+  const [activeSessionId, setActiveSessionId] = useState(null);
 
   // Fetch server feature flags once on mount.
   useEffect(() => {
@@ -163,6 +166,7 @@ function App() {
       setResult(res.data);
       setApproved(false);
       setScreen(SCREENS.RESULT);
+      setActiveSessionId(null);
     } catch (err) {
       console.error("Generate failed:", err);
       toast.error("Couldn't generate record. Please try again.");
@@ -177,6 +181,7 @@ function App() {
     setResult(null);
     setApproved(false);
     setMode("clinical");
+    setActiveSessionId(null);
   }, []);
 
   const handleSelectSession = useCallback((sessionId) => {
@@ -187,6 +192,7 @@ function App() {
       setTranscript(mockTx || "");
       setApproved(false);
       setScreen(SCREENS.RESULT);
+      setActiveSessionId(sessionId);
     }
   }, []);
 
@@ -222,17 +228,20 @@ function App() {
   }, [result, approved, mode]);
 
   return (
-    <div data-testid="quill-app" className="quill-app quill-app-shell">
+    <div data-testid="quill-app" className="quill-app quill-app-shell relative">
+      <BackgroundNetwork />
       {screen !== SCREENS.PRINT && <TopBar />}
       
       {screen === SCREENS.PRINT ? (
         <PrintView result={result} onExit={() => setScreen(SCREENS.RESULT)} />
       ) : (
         <div className="quill-app-body">
-          <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} />
+          <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} activeSessionId={activeSessionId} />
           
           <div className="quill-main">
-            {screen === SCREENS.INPUT && (
+            {loading ? (
+              <LoadingScreen />
+            ) : screen === SCREENS.INPUT ? (
               <InputScreen
                 mode={mode}
                 setMode={setMode}
@@ -243,9 +252,7 @@ function App() {
                 apiBase={API}
                 micEnabled={micEnabled}
               />
-            )}
-      
-            {screen === SCREENS.RESULT && result && (
+            ) : screen === SCREENS.RESULT && result && (
               <ResultScreen
                 transcript={transcript}
                 result={result}

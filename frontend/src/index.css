@@ -6,7 +6,8 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #f7f8fa;
+    background-color: #0B1220;
+    overflow-x: hidden;
 }
 
 body {
@@ -15,7 +16,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #0f172a;
+    color: #FFFFFF;
     line-height: 1.6;
 }
 
@@ -26,31 +27,26 @@ code {
 
 @layer base {
     :root {
-        --background: 220 14% 97%;
-        --foreground: 222 47% 11%;
-        --card: 0 0% 100%;
-        --card-foreground: 222 47% 11%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 222 47% 11%;
-        --primary: 173 84% 32%;
-        --primary-foreground: 0 0% 100%;
-        --secondary: 210 40% 96%;
-        --secondary-foreground: 222 47% 11%;
-        --muted: 210 40% 96%;
-        --muted-foreground: 215 16% 47%;
-        --accent: 210 40% 96%;
-        --accent-foreground: 222 47% 11%;
-        --destructive: 0 72% 51%;
+        --background: 220 48% 8%;
+        --foreground: 0 0% 100%;
+        --card: 213 37% 15%;
+        --card-foreground: 214 32% 91%;
+        --popover: 213 37% 15%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 200 100% 58%;
+        --primary-foreground: 220 48% 8%;
+        --secondary: 215 25% 27%;
+        --secondary-foreground: 0 0% 100%;
+        --muted: 215 16% 47%;
+        --muted-foreground: 215 20% 65%;
+        --accent: 199 89% 74%;
+        --accent-foreground: 220 48% 8%;
+        --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
-        --border: 214 32% 91%;
-        --input: 214 32% 91%;
-        --ring: 173 84% 32%;
-        --chart-1: 173 84% 32%;
-        --chart-2: 38 92% 50%;
-        --chart-3: 0 72% 51%;
-        --chart-4: 215 16% 47%;
-        --chart-5: 222 47% 11%;
-        --radius: 0.75rem;
+        --border: 215 25% 27%;
+        --input: 215 25% 27%;
+        --ring: 200 100% 58%;
+        --radius: 1rem;
     }
 }
 
