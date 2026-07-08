@@ -1,19 +1,20 @@
 import React from "react";
-import { Plus } from "lucide-react";
+import { Plus, User, Clock } from "lucide-react";
+import { BorderGlow } from "./BorderGlow";
 
 export const MOCK_SESSIONS = [
-  { id: 1, initials: "JS", date: "Jul 08", status: "amber" },
-  { id: 2, initials: "AM", date: "Jul 08", status: "red" },
-  { id: 3, initials: "RC", date: "Jul 07", status: "green" },
-  { id: 4, initials: "KL", date: "Jul 06", status: "green" },
-  { id: 5, initials: "TB", date: "Jul 05", status: "amber" },
+  { id: 1, initials: "JS", patientName: "John Smith", date: "Jul 08", time: "14:15", status: "amber", docInitials: "AM" },
+  { id: 2, initials: "AM", patientName: "Alice Miller", date: "Jul 08", time: "11:30", status: "red", docInitials: "AM" },
+  { id: 3, initials: "RC", patientName: "Robert Chen", date: "Jul 07", time: "09:45", status: "green", docInitials: "AM" },
+  { id: 4, initials: "KL", patientName: "Karen Lee", date: "Jul 06", time: "16:20", status: "green", docInitials: "AM" },
+  { id: 5, initials: "TB", patientName: "Thomas Brown", date: "Jul 05", time: "10:15", status: "amber", docInitials: "AM" },
 ];
 
 const StatusDot = ({ status }) => {
   const colors = {
-    red: "bg-[#ef4444]",
-    amber: "bg-[#f59e0b]",
-    green: "bg-[#10b981]",
+    red: "bg-[#EF4444] shadow-[0_0_6px_#EF4444]",
+    amber: "bg-[#F59E0B] shadow-[0_0_6px_#F59E0B]",
+    green: "bg-[#22C55E] shadow-[0_0_6px_#22C55E]",
   };
   return (
     <span 
@@ -23,40 +24,76 @@ const StatusDot = ({ status }) => {
   );
 };
 
-export function Sidebar({ onNew, onSelectSession }) {
+export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
   return (
-    <aside className="quill-sidebar">
+    <aside className="quill-sidebar no-print select-none">
+      {/* New Note button */}
       <button 
         onClick={onNew}
-        className="w-full flex items-center gap-2 justify-center bg-[var(--quill-accent)] text-white font-medium rounded-lg px-4 py-2.5 shadow-sm transition-all hover:bg-[var(--quill-accent-hover)] active:scale-[0.98] mb-8"
+        className="quill-new-note-btn w-full flex items-center gap-2 justify-center text-white font-semibold rounded-xl px-4 py-3.5 shadow-md active:scale-[0.98] mb-6"
       >
         <Plus className="w-4 h-4" />
         New Note
       </button>
 
+      {/* Recent Sessions list */}
       <div className="flex-1">
-        <h3 className="text-[11px] font-semibold text-[var(--quill-muted)] uppercase tracking-wider mb-3 px-2">
+        <h3 className="text-[11px] font-bold text-[var(--quill-muted)] uppercase tracking-wider mb-3 px-1.5 flex items-center gap-1.5">
           Recent Sessions
         </h3>
-        <ul className="space-y-1">
-          {MOCK_SESSIONS.map((session) => (
-            <li 
-              key={session.id} 
-              onClick={() => onSelectSession && onSelectSession(session.id)}
-              className="quill-sidebar-item"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[var(--quill-border)] flex items-center justify-center text-[11px] font-medium text-[var(--quill-ink)]">
-                  {session.initials}
+        <div className="space-y-2.5">
+          {MOCK_SESSIONS.map((session) => {
+            const isSelected = activeSessionId === session.id;
+            return (
+              <BorderGlow
+                key={session.id}
+                edgeSensitivity={16}
+                borderRadius={14}
+                glowRadius={22}
+                glowIntensity={0.35} // subtle glow intensity
+                animated={false}
+                backgroundColor={isSelected ? "rgba(91, 185, 140, 0.15)" : "#1C1C1E"}
+                borderColor={isSelected ? "#5BB98C" : "#2C2C2E"}
+                colors={["#5BB98C", "#CBE1FD"]}
+                className="transition-transform duration-200 hover:scale-[1.01]"
+              >
+                <div 
+                  onClick={() => onSelectSession && onSelectSession(session.id)}
+                  className="p-3.5 cursor-pointer relative"
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-2">
+                      {/* Patient Initials Circle */}
+                      <div className="w-6.5 h-6.5 rounded-full bg-[#1C1C1E] border border-[#2C2C2E] flex items-center justify-center text-[10px] font-bold text-[#5BB98C]">
+                        {session.initials}
+                      </div>
+                      {/* Patient Name */}
+                      <span className="text-[13px] font-semibold text-[#F8FAFC] truncate max-w-[130px]">
+                        {session.patientName}
+                      </span>
+                    </div>
+                    {/* Status Indicator */}
+                    <StatusDot status={session.status} />
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-[#CBD5E1] mt-2 pt-2 border-t border-[#2C2C2E]/40">
+                    {/* Doc Avatar */}
+                    <div className="flex items-center gap-1 font-semibold text-stone-400">
+                      <User className="w-3 h-3 text-[#5BB98C]" />
+                      <span>Dr. {session.docInitials}</span>
+                    </div>
+
+                    {/* Timestamp */}
+                    <div className="flex items-center gap-1 opacity-70">
+                      <Clock className="w-3 h-3 text-stone-500" />
+                      <span>{session.date}</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[14px] font-medium text-[var(--quill-body)]">
-                  {session.date}
-                </span>
-              </div>
-              <StatusDot status={session.status} />
-            </li>
-          ))}
-        </ul>
+              </BorderGlow>
+            );
+          })}
+        </div>
       </div>
     </aside>
   );

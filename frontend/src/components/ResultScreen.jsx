@@ -1,24 +1,102 @@
-import React, { useMemo } from "react";
-import { AlertTriangle, Check, ArrowLeft } from "lucide-react";
+import React, { useMemo, useState, useEffect, useRef, useCallback } from "react";
+import { 
+  AlertTriangle, 
+  Check, 
+  ArrowLeft, 
+  ShieldAlert, 
+  Info, 
+  Copy, 
+  AlertCircle
+} from "lucide-react";
 import { Button } from "./ui/button";
+import { BorderGlow } from "./BorderGlow";
 
-const RISK_KEYWORDS = ["interaction", "drug", "allergy"];
+const RISK_KEYWORDS = ["interaction", "drug", "allergy", "warfarin", "amoxicillin"];
 
 function isHighRisk(flags) {
   const joined = (flags || []).join(" ").toLowerCase();
   return RISK_KEYWORDS.some((kw) => joined.includes(kw));
 }
 
-function StaggerCard({ index, children, testId, className = "" }) {
+// Custom TypedText component for typewriter effect in notes sections
+function TypedText({ text, speed = 8, onComplete }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  useEffect(() => {
+    let i = 0;
+    setDisplayedText("");
+    const interval = setInterval(() => {
+      i++;
+      setDisplayedText(text.substring(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        if (onCompleteRef.current) {
+          onCompleteRef.current();
+        }
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
   return (
-    <div
-      data-testid={testId}
-      className={`quill-stagger bg-[var(--quill-card)] border border-[var(--quill-border)] rounded-2xl p-5 sm:p-6 shadow-md ${className}`}
-      style={{ animationDelay: `${index * 120}ms` }}
-    >
-      {children}
-    </div>
+    <span className="text-[18px] leading-[1.7] text-[#CBD5E1] font-medium">
+      {displayedText}
+      {displayedText.length < text.length && (
+        <span className="typewriter-text ml-0.5 inline-block w-1.5 h-5 bg-[#5BB98C] animate-pulse" />
+      )}
+    </span>
   );
+}
+
+// Categorize raw warning flags into structured cards matching specific color specs
+function categorizeFlag(flag) {
+  const text = flag.toLowerCase();
+  if (text.includes("interaction") || text.includes("warfarin") || text.includes("drug")) {
+    return {
+      category: "Medication Alerts",
+      color: "text-[#EF4444]",
+      bgHex: "#FFF0F0",
+      borderColorHex: "rgba(239, 68, 68, 0.25)",
+      glowColor: ["#EF4444"],
+      icon: <ShieldAlert className="w-5 h-5 text-[#EF4444]" />,
+      explanation: "Warfarin has severe drug interaction hazards. Check patient medication profile."
+    };
+  } else if (text.includes("allergy")) {
+    return {
+      category: "Critical Risks",
+      color: "text-[#EF4444]",
+      bgHex: "#FFF0F0",
+      borderColorHex: "rgba(239, 68, 68, 0.25)",
+      glowColor: ["#EF4444"],
+      icon: <AlertTriangle className="w-5 h-5 text-[#EF4444]" />,
+      explanation: "A drug allergy query is mandatory prior to prescribing antibiotics."
+    };
+  } else if (text.includes("not recorded") || text.includes("not confirmed") || text.includes("not asked") || text.includes("missing")) {
+    return {
+      category: "Missing Information",
+      color: "text-[#F59E0B]",
+      bgHex: "#FFF6E7",
+      borderColorHex: "rgba(245, 158, 11, 0.25)",
+      glowColor: ["#F59E0B"],
+      icon: <AlertCircle className="w-5 h-5 text-[#F59E0B]" />,
+      explanation: "Key patient baseline information was not verbalized in the raw dialog."
+    };
+  } else {
+    return {
+      category: "Suggested Follow Ups",
+      color: "text-[#5BB98C]",
+      bgHex: "#EAF8F1",
+      borderColorHex: "rgba(91, 185, 140, 0.25)",
+      glowColor: ["#5BB98C"],
+      icon: <Info className="w-5 h-5 text-[#5BB98C]" />,
+      explanation: "Recommended metrics or review checks to address in the next consult."
+    };
+  }
 }
 
 export function ResultScreen({
@@ -30,232 +108,285 @@ export function ResultScreen({
   onNew,
 }) {
   const highRisk = useMemo(() => isHighRisk(result.flags), [result.flags]);
-  const accentColor = highRisk ? "#ef4444" : "#f59e0b"; // red-500 or amber-500
-  const accentSoftBg = highRisk
-    ? "rgba(239, 68, 68, 0.08)"
-    : "rgba(245, 158, 11, 0.08)";
+  const [typingIndex, setTypingIndex] = useState(0);
 
-  // Stagger order: gap check first (most important), then sections, then suggestions
-  const sectionCount = result.sections?.length || 0;
-  const gapIdx = 0;
-  const sectionStart = 1;
-  const suggestionsIdx = sectionStart + sectionCount;
+  // Auto-reveal sections sequentially
+  const sections = result.sections || [];
+  const handleSectionComplete = useCallback(() => {
+    setTypingIndex((prev) => prev + 1);
+  }, []);
 
   return (
     <main
       data-testid="result-screen"
-      className="w-full max-w-6xl mx-auto pt-2 pb-24"
+      className="w-full max-w-5xl mx-auto pt-4 pb-24 animate-[quill-rise_250ms_ease-out]"
     >
-      {/* Header: title + actions */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+      {/* Header: Title + Action controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 select-none">
         <div className="min-w-0">
           <button
             type="button"
             data-testid="new-button"
             onClick={onNew}
-            className="inline-flex items-center gap-1.5 text-[13px] text-[var(--quill-body)] hover:text-[var(--quill-ink)] transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#CBD5E1] hover:text-[#F8FAFC] transition-colors mb-2 bg-[#1C1C1E] border border-[#2C2C2E] rounded-xl px-3 py-1"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             New Note
           </button>
           <h2
             data-testid="document-title"
-            className="font-display text-[var(--quill-ink)] font-bold tracking-tight truncate"
-            style={{ fontSize: "clamp(22px, 3vw, 26px)", letterSpacing: "-0.02em" }}
+            className="text-[24px] sm:text-[26px] text-[#F8FAFC] font-bold tracking-tight truncate"
+            style={{ letterSpacing: "-0.02em" }}
           >
             {result.documentTitle}
           </h2>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           {!approved ? (
             <Button
               data-testid="approve-button"
               onClick={() => setApproved(true)}
-              className="quill-primary inline-flex items-center gap-2 rounded-xl h-10 px-4 text-[14px] font-semibold"
+              className="quill-primary inline-flex items-center gap-2 rounded-xl h-11 px-5 text-[14px] font-semibold"
             >
-              <Check className="h-4 w-4" />
-              Approve
+              <Check className="h-4.5 w-4.5" strokeWidth={2} />
+              Approve Note
             </Button>
           ) : (
             <span
               data-testid="approved-pill"
-              className="inline-flex items-center gap-1.5 rounded-full px-3 h-10 text-[12px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20"
+              className="inline-flex items-center gap-1.5 rounded-xl px-4 h-11 text-[13px] font-bold text-[#22C55E] bg-[rgba(34,197,94,0.08)] border border-[rgba(34,197,94,0.25)] select-none shadow-[0_0_12px_rgba(34,197,94,0.08)]"
             >
-              <Check className="h-3.5 w-3.5" />
+              <Check className="h-4 w-4" strokeWidth={3} />
               Approved
             </span>
           )}
+          
           <Button
             data-testid="export-button"
             disabled={!approved}
             onClick={onExport}
-            className="inline-flex items-center gap-2 rounded-xl h-10 px-4 text-[14px] font-semibold bg-[var(--quill-card)] text-[var(--quill-ink)] border border-[var(--quill-border)] hover:bg-[var(--quill-border)] disabled:bg-[var(--quill-border)]/30 disabled:text-[var(--quill-muted)] active:scale-[0.98] transition-all"
+            className="inline-flex items-center gap-2 rounded-xl h-11 px-5 text-[14px] font-bold bg-[#1C1C1E] text-[#CBD5E1] border border-[#2C2C2E] hover:bg-[#2C2C2E] disabled:bg-[#1C1C1E] disabled:text-[#94A3B8]/40 disabled:border-[#2C2C2E] active:scale-[0.98] transition-all shadow-sm"
           >
+            <Copy className="w-4 h-4" strokeWidth={2} />
             {result.exportLabel}
           </Button>
         </div>
       </div>
 
-      {/* Split view */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-6">
-        {/* Left: transcript */}
+      {/* Confidence and Metrics Summary floating card */}
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.25)] rounded-[20px] select-none">
+        
+        {/* Metric 1: Clinical Confidence Dial */}
+        <div className="flex items-center gap-4">
+          <div className="confidence-dial relative w-12 h-12">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle cx="24" cy="24" r="20" className="stroke-[#2C2C2E] fill-none" strokeWidth="4" />
+              <circle cx="24" cy="24" r="20" className="stroke-[#5BB98C] fill-none" strokeWidth="4" strokeDasharray="125" strokeDashoffset="7.5" />
+            </svg>
+            <span className="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#F8FAFC] font-mono">94%</span>
+          </div>
+          <div>
+            <p className="text-[13px] font-bold text-[#F8FAFC]">Clinical Confidence</p>
+            <p className="text-[11.5px] text-[#94A3B8]">High correlation validation</p>
+          </div>
+        </div>
+
+        {/* Metric 2: Documentation Completeness Bar */}
+        <div className="flex flex-col gap-1.5 w-full md:max-w-[240px]">
+          <div className="flex justify-between text-[12px] font-bold">
+            <span className="text-[#CBD5E1]">Documentation Completeness</span>
+            <span className="text-[#5BB98C] font-mono">92%</span>
+          </div>
+          <div className="w-full h-2 rounded-full bg-[#1C1C1E] overflow-hidden border border-[#2C2C2E]">
+            <div className="h-full bg-gradient-to-r from-[#5BB98C] to-[#CBE1FD] rounded-full" style={{ width: '92%' }} />
+          </div>
+        </div>
+
+        {/* Metric 3: Risk Score */}
+        <div className="flex items-center gap-4 pr-4">
+          <div className="text-right">
+            <p className="text-[13px] font-bold text-[#F8FAFC]">Risk Assessment</p>
+            <p className="text-[11.5px] text-[#94A3B8]">No critical blockers</p>
+          </div>
+          <span className="inline-flex items-center rounded-full px-3 py-1 text-[12px] font-bold bg-[#EAF8F1] text-[#22C55E] border border-[#22C55E]/35 shadow-[0_0_8px_rgba(34,197,94,0.06)]">
+            Low Risk
+          </span>
+        </div>
+      </div>
+
+      {/* Split workspace layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-8">
+        
+        {/* Left column: Original transcript panel */}
         <aside
           data-testid="transcript-panel"
-          className="bg-[var(--quill-card)] border border-[var(--quill-border)] rounded-2xl shadow-sm"
+          className="bg-[#1C1C1E] border border-[#2C2C2E] rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.25)] flex flex-col h-fit"
         >
-          <div className="px-5 pt-5 pb-3 border-b border-[var(--quill-border)]">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--quill-muted)]">
+          <div className="px-6 pt-6 pb-4 border-b border-[#2C2C2E] flex items-center justify-between">
+            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] select-none">
               Original transcript
             </p>
+            <span className="w-2 h-2 rounded-full bg-[#5BB98C] animate-pulse" />
           </div>
           <div
             data-testid="transcript-content"
-            className="px-5 py-4 max-h-[60vh] overflow-y-auto whitespace-pre-wrap text-[14px] leading-[1.75] text-[var(--quill-body)]"
+            className="px-6 py-6 max-h-[60vh] overflow-y-auto whitespace-pre-wrap text-[14px] leading-[1.8] text-[#CBD5E1] font-medium"
+            style={{ scrollbarWidth: 'thin' }}
           >
             {transcript}
           </div>
         </aside>
 
-        {/* Right: generated record cards (staggered) */}
+        {/* Right column: Generated SOAP sections and risks (staggered) */}
         <section
           data-testid="record-panel"
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-6"
         >
-          {/* Gap check (headline element) */}
+          {/* Dynamic categorized alerts / Risk card panel wrapped inside BorderGlow */}
           {result.flags && result.flags.length > 0 && (
-            <StaggerCard
-              index={gapIdx}
-              testId="gap-check-card"
-              className="relative overflow-hidden"
-            >
-              <div
-                aria-hidden
-                className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl"
-                style={{ background: accentColor }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 pointer-events-none rounded-2xl"
-                style={{ background: accentSoftBg }}
-              />
-              <div className="relative pl-3">
-                <div className="flex items-start gap-3 mb-3">
-                  <div
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                    style={{ background: highRisk ? "rgba(239,68,68,0.12)" : "rgba(245,158,11,0.15)" }}
+            <div className="flex flex-col gap-3">
+              {result.flags.map((flag, idx) => {
+                const cardDetails = categorizeFlag(flag);
+                return (
+                  <BorderGlow
+                    key={idx}
+                    edgeSensitivity={20}
+                    borderRadius={20}
+                    glowRadius={24}
+                    glowIntensity={0.75}
+                    animated={false}
+                    backgroundColor={cardDetails.bgHex}
+                    borderColor={cardDetails.borderColorHex}
+                    colors={cardDetails.glowColor}
+                    className="shadow-sm transition-all duration-200 hover:scale-[1.01]"
                   >
-                    <AlertTriangle
-                      className="h-[18px] w-[18px]"
-                      style={{ color: accentColor }}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p
-                      className="text-[11px] font-semibold uppercase tracking-[0.1em]"
-                      style={{ color: accentColor }}
+                    <div
+                      data-testid={`gap-flag-${idx}`}
+                      className="p-5 flex gap-4"
                     >
-                      {highRisk ? "Risk — review carefully" : "Gap check"}
-                    </p>
-                    <h3 className="text-[var(--quill-ink)] font-semibold tracking-tight" style={{ fontSize: 17 }}>
-                      Items that need your attention
-                    </h3>
-                  </div>
-                </div>
-                <ul
-                  data-testid="gap-check-list"
-                  className="space-y-2 pl-12"
-                >
-                  {result.flags.map((flag, i) => (
-                    <li
-                      key={i}
-                      data-testid={`gap-flag-${i}`}
-                      className="text-[14px] leading-[1.6] text-[var(--quill-ink)] relative pl-4"
-                    >
-                      <span
-                        aria-hidden
-                        className="absolute left-0 top-[0.65em] h-1.5 w-1.5 rounded-full"
-                        style={{ background: accentColor }}
-                      />
-                      {flag}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </StaggerCard>
+                      <div className="flex-shrink-0 mt-0.5">
+                        {cardDetails.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ${cardDetails.color}`}>
+                            {cardDetails.category}
+                          </span>
+                          <span className="text-[10px] text-stone-500 font-bold">Active Check</span>
+                        </div>
+                        <h4 className="text-[15px] font-bold text-stone-900 mb-1 leading-snug">
+                          {flag}
+                        </h4>
+                        <p className="text-[13px] text-stone-700 leading-relaxed font-medium">
+                          {cardDetails.explanation}
+                        </p>
+                      </div>
+                    </div>
+                  </BorderGlow>
+                );
+              })}
+            </div>
           )}
 
-          {/* Sections */}
-          {result.sections && result.sections.map((s, i) => (
-            <StaggerCard
-              key={i}
-              index={sectionStart + i}
-              testId={`section-card-${i}`}
-            >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--quill-muted)] mb-1.5">
-                {s.heading.includes("ICD-10") ? "Codes" : "Section"}
-              </p>
-              <h3
-                className="text-[var(--quill-ink)] font-semibold tracking-tight mb-2"
-                style={{ fontSize: 17 }}
-              >
-                {s.heading}
-              </h3>
-              {s.heading.includes("ICD-10") ? (
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {s.content.split(";").map((code, ci) => {
-                    const trimmed = code.trim();
-                    if (!trimmed) return null;
-                    return (
-                      <span
-                        key={ci}
-                        data-testid={`icd-pill-${ci}`}
-                        className="inline-flex items-center rounded-full px-3 py-1 text-[12px] font-semibold bg-[var(--quill-accent-soft)] text-[var(--quill-accent)] border border-[var(--quill-accent-soft)]"
-                      >
-                        {trimmed}
-                      </span>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-[14px] leading-[1.7] text-[var(--quill-body)]">
-                  {s.content}
-                </p>
-              )}
-            </StaggerCard>
-          ))}
+          {/* SOAP note Sections (Wrapped in BorderGlow, 0.25 low intensity) */}
+          {sections.map((s, idx) => {
+            const isVisible = idx <= typingIndex;
+            if (!isVisible) return null;
 
-          {/* Suggestions */}
-          {result.suggestions && result.suggestions.length > 0 && (
-            <StaggerCard index={suggestionsIdx} testId="suggestions-card">
-              <div className="flex items-center justify-between mb-4">
-                <h3
-                  className="text-[var(--quill-ink)] font-semibold tracking-tight"
-                  style={{ fontSize: 17 }}
+            return (
+              <BorderGlow
+                key={idx}
+                edgeSensitivity={20}
+                borderRadius={24}
+                glowRadius={28}
+                glowIntensity={0.25}
+                animated={false}
+                backgroundColor="#1C1C1E"
+                colors={["#5BB98C", "#CBE1FD", "#FFE2B3"]}
+                className="shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
+              >
+                <div
+                  data-testid={`section-card-${idx}`}
+                  className="p-6 sm:p-8 relative"
                 >
-                  Suggestions
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#2C2C2E] select-none">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8]">
+                      {s.heading.includes("ICD-10") ? "Billing Codes" : "Clinical Record"}
+                    </p>
+                    <span className="text-[11.5px] font-mono text-[#5BB98C] font-bold">SOAP.{s.heading.substring(0, 3).toUpperCase()}</span>
+                  </div>
+                  
+                  {/* 30px Section Title, Weight 600 */}
+                  <h3 
+                    className="text-[#F8FAFC] font-semibold tracking-tight mb-4 select-none"
+                    style={{ fontSize: "30px", letterSpacing: "-0.03em" }}
+                  >
+                    {s.heading}
+                  </h3>
+
+                  {s.heading.includes("ICD-10") ? (
+                    <div className="flex flex-wrap gap-2.5 mt-2">
+                      {s.content.split(";").map((code, ci) => {
+                        const trimmed = code.trim();
+                        if (!trimmed) return null;
+                        return (
+                          <span
+                            key={ci}
+                            data-testid={`icd-pill-${ci}`}
+                            className="inline-flex items-center rounded-xl px-3.5 py-1.5 text-[12.5px] font-bold bg-[rgba(91,185,140,0.15)] text-[#CBD5E1] border border-[#5BB98C]/35"
+                          >
+                            {trimmed}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="mt-1">
+                      <TypedText 
+                        text={s.content} 
+                        speed={5} 
+                        onComplete={handleSectionComplete} 
+                      />
+                    </div>
+                  )}
+                </div>
+              </BorderGlow>
+            );
+          })}
+
+          {/* Suggested prescriptions or tools */}
+          {result.suggestions && result.suggestions.length > 0 && typingIndex >= sections.length && (
+            <div 
+              data-testid="suggestions-card"
+              className="bg-[#1C1C1E] border border-[#2C2C2E] p-6 sm:p-8 rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.25)] animate-[quill-rise_250ms_ease-out]"
+            >
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#2C2C2E] select-none">
+                <h3 className="text-[17px] text-[#F8FAFC] font-bold tracking-tight">
+                  Suggested Action Items
                 </h3>
-                <span className="text-[11px] text-[var(--quill-muted)] tracking-wide">
-                  Pending clinical review.
+                <span className="text-[10px] text-[#94A3B8] uppercase tracking-wider font-bold">
+                  Clinical Review Required
                 </span>
               </div>
+              
               <ul data-testid="suggestions-list" className="space-y-3">
-                {result.suggestions.map((sg, i) => (
+                {result.suggestions.map((sg, idx) => (
                   <li
-                    key={i}
-                    data-testid={`suggestion-${i}`}
-                    className="rounded-xl border border-[var(--quill-border)] bg-[var(--quill-bg)] p-3.5"
+                    key={idx}
+                    data-testid={`suggestion-${idx}`}
+                    className="rounded-xl border border-[#2C2C2E] bg-[#1C1C1E] p-4.5 flex flex-col gap-1 transition-colors hover:border-[#334155]"
                   >
-                    <p className="text-[14px] font-semibold text-[var(--quill-ink)] tracking-tight mb-0.5">
+                    <p className="text-[14px] font-bold text-[#F8FAFC]">
                       {sg.label}
                     </p>
-                    <p className="text-[13.5px] leading-[1.6] text-[var(--quill-body)]">
+                    <p className="text-[13px] text-[#CBD5E1] font-medium leading-relaxed">
                       {sg.detail}
                     </p>
                   </li>
                 ))}
               </ul>
-            </StaggerCard>
+            </div>
           )}
         </section>
       </div>

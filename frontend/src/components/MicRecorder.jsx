@@ -230,12 +230,22 @@ export function MicRecorder({ apiBase, onTranscribed, onError, disabled }) {
   const showWarn = state === "recording" && secsLeft <= WARN_BEFORE_SECONDS;
 
   return (
-    <div className="quill-mic-wrap" data-state={state}>
+    <div className="quill-mic-wrap animate-[quill-rise_0.3s_ease-out]" data-state={state}>
       {state === "recording" && (
-        <span data-testid="mic-timer" className="quill-mic-timer">
-          <span className="quill-mic-pulse-dot" aria-hidden />
-          {fmtTime(elapsed)}
-        </span>
+        <>
+          <div className="audio-waveform mr-1 select-none">
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.6s' }} />
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.85s' }} />
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.5s' }} />
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.7s' }} />
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.9s' }} />
+            <span className="audio-waveform-bar" style={{ animationDuration: '0.65s' }} />
+          </div>
+          <span data-testid="mic-timer" className="quill-mic-timer">
+            <span className="quill-mic-pulse-dot" aria-hidden />
+            {fmtTime(elapsed)}
+          </span>
+        </>
       )}
       {showWarn && (
         <span data-testid="mic-warn" className="quill-mic-warn">

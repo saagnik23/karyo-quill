@@ -7,6 +7,12 @@ import { InputScreen } from "./components/InputScreen";
 import { ResultScreen } from "./components/ResultScreen";
 import { PrintView } from "./components/PrintView";
 import { Sidebar } from "./components/Sidebar";
+import { BackgroundNetwork } from "./components/BackgroundNetwork";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { TargetCursor } from "./components/TargetCursor";
+import { ClickSpark } from "./components/ClickSpark";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { FuzzyText } from "./components/FuzzyText";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 const API = `${BACKEND_URL}/api`;
@@ -127,7 +133,7 @@ function composeExportBody(result) {
   return `${result.documentTitle}\n\n${sectionLines}\n\nSuggestions\n${suggestionLines}\n`;
 }
 
-function App() {
+function MainApp() {
   const [screen, setScreen] = useState(SCREENS.INPUT);
   const [mode, setMode] = useState("clinical");
   const [transcript, setTranscript] = useState("");
@@ -135,6 +141,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [approved, setApproved] = useState(false);
   const [micEnabled, setMicEnabled] = useState(false);
+  const [activeSessionId, setActiveSessionId] = useState(null);
 
   // Fetch server feature flags once on mount.
   useEffect(() => {
@@ -163,6 +170,7 @@ function App() {
       setResult(res.data);
       setApproved(false);
       setScreen(SCREENS.RESULT);
+      setActiveSessionId(null);
     } catch (err) {
       console.error("Generate failed:", err);
       toast.error("Couldn't generate record. Please try again.");
@@ -177,6 +185,7 @@ function App() {
     setResult(null);
     setApproved(false);
     setMode("clinical");
+    setActiveSessionId(null);
   }, []);
 
   const handleSelectSession = useCallback((sessionId) => {
@@ -187,6 +196,7 @@ function App() {
       setTranscript(mockTx || "");
       setApproved(false);
       setScreen(SCREENS.RESULT);
+      setActiveSessionId(sessionId);
     }
   }, []);
 
@@ -222,17 +232,19 @@ function App() {
   }, [result, approved, mode]);
 
   return (
-    <div data-testid="quill-app" className="quill-app quill-app-shell">
+    <>
       {screen !== SCREENS.PRINT && <TopBar />}
       
       {screen === SCREENS.PRINT ? (
         <PrintView result={result} onExit={() => setScreen(SCREENS.RESULT)} />
       ) : (
         <div className="quill-app-body">
-          <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} />
+          <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} activeSessionId={activeSessionId} />
           
           <div className="quill-main">
-            {screen === SCREENS.INPUT && (
+            {loading ? (
+              <LoadingScreen />
+            ) : screen === SCREENS.INPUT ? (
               <InputScreen
                 mode={mode}
                 setMode={setMode}
@@ -243,9 +255,7 @@ function App() {
                 apiBase={API}
                 micEnabled={micEnabled}
               />
-            )}
-      
-            {screen === SCREENS.RESULT && result && (
+            ) : (
               <ResultScreen
                 transcript={transcript}
                 result={result}
@@ -259,17 +269,68 @@ function App() {
         </div>
       )}
 
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            background: "#0F172A",
-            color: "#FFF",
-            border: "1px solid #1E293B",
-          },
-        }}
-      />
+      <Toaster position="bottom-right" richColors toastOptions={{ className: "quill-toast" }} />
+    </>
+  );
+}
+
+function NotFound() {
+  const navigate = useNavigate();
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 select-none relative z-10">
+      <FuzzyText
+        baseIntensity={0.2}
+        hoverIntensity={0.5}
+        enableHover={true}
+        color="#5BB98C"
+        fontSize="clamp(4rem, 15vw, 12rem)"
+        clickEffect={true}
+        glitchMode={true}
+      >
+        404
+      </FuzzyText>
+      <h2 className="text-[#F8FAFC] text-[28px] font-bold mt-6 mb-3 select-none">
+        Page Not Found
+      </h2>
+      <p className="text-[#CBD5E1] text-[16px] max-w-sm mb-8 leading-relaxed font-medium select-none">
+        The workspace or clinical session you requested could not be located.
+      </p>
+      <button
+        onClick={() => navigate("/")}
+        className="quill-new-note-btn inline-flex items-center justify-center gap-2 rounded-xl h-11 px-5 text-[14px] font-bold active:scale-[0.98] transition-transform shadow-sm"
+      >
+        Return to Workspace
+      </button>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <ClickSpark
+        sparkColor='#CBE1FD'
+        sparkSize={10}
+        sparkRadius={18}
+        sparkCount={8}
+        duration={400}
+      >
+        <div data-testid="quill-app" className="quill-app quill-app-shell relative">
+          <TargetCursor
+            targetSelector="button, [role='button'], textarea, input, .border-glow-card, select, .cursor-pointer, [data-testid='mode-select-trigger']"
+            cursorColor="#ffffff"
+            cursorColorOnTarget="#5BB98C"
+            hideDefaultCursor={true}
+          />
+          <BackgroundNetwork />
+          
+          <Routes>
+            <Route path="/" element={<MainApp />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </ClickSpark>
+    </BrowserRouter>
   );
 }
 
