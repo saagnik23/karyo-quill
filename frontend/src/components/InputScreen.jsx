@@ -73,7 +73,7 @@ export function InputScreen({
             }}
           >
             <span className="opacity-0 translate-y-3 animate-[quill-rise_0.6s_ease-out_0.1s_forwards]">Capture Context.</span>
-            <span className="opacity-0 translate-y-3 animate-[quill-rise_0.6s_ease-out_0.25s_forwards] text-[#A78BFA]">Detect Risks.</span>
+            <span className="opacity-0 translate-y-3 animate-[quill-rise_0.6s_ease-out_0.25s_forwards] text-[#5BB98C]">Detect Risks.</span>
             <span className="opacity-0 translate-y-3 animate-[quill-rise_0.6s_ease-out_0.4s_forwards]">Generate Intelligence.</span>
           </h1>
           
@@ -111,9 +111,9 @@ export function InputScreen({
           glowRadius={32}
           glowIntensity={0.65}
           animated={false}
-          backgroundColor="#1E293B"
-          colors={["#8B5CF6", "#38BDF8", "#A78BFA"]}
-          className="flex-1 shadow-[0_10px_40px_rgba(0,0,0,0.15)]"
+          backgroundColor="#1C1C1E"
+          colors={["#5BB98C", "#CBE1FD", "#FFE2B3"]}
+          className="flex-1 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
         >
           <div className="p-8 relative">
             <div className="mb-6">
@@ -127,20 +127,20 @@ export function InputScreen({
                 <SelectTrigger
                   id="mode-select"
                   data-testid="mode-select-trigger"
-                  className="h-12 w-full bg-[#1E293B] border-[#334155] text-[#F8FAFC] text-[14.5px] rounded-[16px] focus:border-[var(--quill-accent)] focus:ring-1 focus:ring-[var(--quill-accent)]/20 transition-all font-semibold"
+                  className="h-12 w-full bg-[#1C1C1E] border-[#2C2C2E] text-[#F8FAFC] text-[14.5px] rounded-[16px] focus:border-[var(--quill-accent)] focus:ring-1 focus:ring-[var(--quill-accent)]/20 transition-all font-semibold"
                 >
                   <SelectValue placeholder="Select mode" />
                 </SelectTrigger>
                 <SelectContent
                   data-testid="mode-select-content"
-                  className="bg-[#1F2937] border-[#334155] text-[#F8FAFC]"
+                  className="bg-[#1C1C1E] border-[#2C2C2E] text-[#F8FAFC]"
                 >
                   {MODES.map((m) => (
                     <SelectItem
                       key={m.value}
                       value={m.value}
                       data-testid={`mode-option-${m.value}`}
-                      className="text-[14.5px] focus:bg-[#273449]"
+                      className="text-[14.5px] focus:bg-[#2C2C2E]"
                     >
                       {m.label}
                     </SelectItem>
@@ -164,7 +164,7 @@ export function InputScreen({
                   onChange={(e) => setTranscript(e.target.value)}
                   placeholder=""
                   rows={10}
-                  className="w-full resize-y rounded-[20px] bg-[#1E293B] border border-[#334155] focus:border-[#8B5CF6] focus:ring-[3px] focus:ring-[rgba(139,92,246,0.15)] outline-none px-6 py-5 pr-16 text-[18px] leading-[1.7] text-[#F8FAFC] transition-all duration-300 relative z-1 placeholder-[#64748B]"
+                  className="w-full resize-y rounded-[20px] bg-[#1C1C1E] border border-[#2C2C2E] focus:border-[#5BB98C] focus:ring-[3px] focus:ring-[rgba(91,185,140,0.15)] outline-none px-6 py-5 pr-16 text-[18px] leading-[1.7] text-[#F8FAFC] transition-all duration-300 relative z-1 placeholder-[#64748B]"
                   style={{ minHeight: 220 }}
                 />
 
@@ -210,27 +210,27 @@ export function InputScreen({
               )}
             </div>
 
-            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-8 pt-6 border-t border-[#334155]">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-8 pt-6 border-t border-[#2C2C2E]">
               {/* Load Sample Button */}
               <button
                 type="button"
                 data-testid="load-sample-button"
                 onClick={loadSample}
-                className="inline-flex items-center justify-center gap-2 rounded-[16px] h-11 px-4 text-[13px] font-bold text-[#CBD5E1] bg-transparent hover:text-[#F8FAFC] hover:bg-[#273449] active:scale-[0.98] transition-all border border-[#475569]"
+                className="inline-flex items-center justify-center gap-2 rounded-[16px] h-11 px-4 text-[13px] font-bold text-[#CBD5E1] bg-transparent hover:text-[#F8FAFC] hover:bg-[#2C2C2E] active:scale-[0.98] transition-all border border-[#2C2C2E]"
               >
                 <FileText className="h-4 w-4 opacity-80" />
                 Load sample
               </button>
 
-              {/* Sparkles Generate Button (Lavender) wrapped inside BorderGlow */}
+              {/* Sparkles Generate Button (Soft Green) wrapped inside BorderGlow */}
               <BorderGlow
                 edgeSensitivity={18}
                 borderRadius={16}
                 glowRadius={20}
                 glowIntensity={0.8}
                 animated={false}
-                backgroundColor={canGenerate ? "#8B5CF6" : "#1E293B"}
-                colors={["#A78BFA", "#8B5CF6", "#38BDF8"]}
+                backgroundColor={canGenerate ? "#5BB98C" : "#1C1C1E"}
+                colors={["#CBE1FD", "#5BB98C", "#FFE2B3"]}
                 className={`transition-all duration-200 select-none ${
                   canGenerate ? "hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]" : ""
                 }`}

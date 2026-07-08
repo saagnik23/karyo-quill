@@ -101,8 +101,8 @@ export function BackgroundNetwork() {
       {/* Full-screen MagicRings WebGL shader background (10% subtle opacity) */}
       <div className="absolute inset-0 pointer-events-auto opacity-10">
         <MagicRings
-          color="#8B5CF6"
-          colorTwo="#38BDF8"
+          color="#5BB98C"
+          colorTwo="#CBE1FD"
           ringCount={6}
           speed={0.5}
           attenuation={10}

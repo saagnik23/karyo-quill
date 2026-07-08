@@ -52,9 +52,9 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
                 glowRadius={22}
                 glowIntensity={0.35} // subtle glow intensity
                 animated={false}
-                backgroundColor={isSelected ? "rgba(139, 92, 246, 0.15)" : "#1F2937"}
-                borderColor={isSelected ? "#8B5CF6" : "#334155"}
-                colors={["#8B5CF6", "#38BDF8"]}
+                backgroundColor={isSelected ? "rgba(91, 185, 140, 0.15)" : "#1C1C1E"}
+                borderColor={isSelected ? "#5BB98C" : "#2C2C2E"}
+                colors={["#5BB98C", "#CBE1FD"]}
                 className="transition-transform duration-200 hover:scale-[1.01]"
               >
                 <div 
@@ -64,7 +64,7 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       {/* Patient Initials Circle */}
-                      <div className="w-6.5 h-6.5 rounded-full bg-[#1E293B] border border-[#334155] flex items-center justify-center text-[10px] font-bold text-[var(--quill-accent)]">
+                      <div className="w-6.5 h-6.5 rounded-full bg-[#1C1C1E] border border-[#2C2C2E] flex items-center justify-center text-[10px] font-bold text-[#5BB98C]">
                         {session.initials}
                       </div>
                       {/* Patient Name */}
@@ -76,10 +76,10 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
                     <StatusDot status={session.status} />
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] text-[#CBD5E1] mt-2 pt-2 border-t border-[#334155]/40">
+                  <div className="flex items-center justify-between text-[11px] text-[#CBD5E1] mt-2 pt-2 border-t border-[#2C2C2E]/40">
                     {/* Doc Avatar */}
                     <div className="flex items-center gap-1 font-semibold text-stone-400">
-                      <User className="w-3 h-3 text-[var(--quill-accent)]" />
+                      <User className="w-3 h-3 text-[#5BB98C]" />
                       <span>Dr. {session.docInitials}</span>
                     </div>
 

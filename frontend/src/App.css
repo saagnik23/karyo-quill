@@ -2,30 +2,33 @@
    Dark slate backgrounds, premium cards, lavender accents, and elegant typography. */
 
 :root {
-  --quill-bg: #0F172A;
-  /* deep slate */
-  --quill-card: #1F2937;
-  /* slate card */
+  --quill-bg: #000000;
+  /* pure black background */
+  --quill-card: #1C1C1E;
+  /* dark matte gray card */
   --quill-ink: #F8FAFC;
   /* light text */
   --quill-body: #CBD5E1;
   /* body text */
   --quill-muted: #94A3B8;
   /* muted text */
-  --quill-accent: #8B5CF6;
-  /* elegant lavender */
-  --quill-accent-hover: #7C3AED;
-  /* darker lavender */
-  --quill-accent-soft: rgba(139, 92, 246, 0.08);
+  --quill-accent: #5BB98C;
+  /* mint/success green */
+  --quill-accent-hover: #4CA379;
+  /* darker green */
+  --quill-accent-soft: rgba(91, 185, 140, 0.08);
   --quill-amber: #F59E0B;
-  /* warning */
+  /* warning yellow */
   --quill-red: #EF4444;
-  /* danger */
-  --quill-border: #334155;
-  /* border slate */
-  --quill-border-focus: #8B5CF6;
-  --quill-green: #22C55E;
+  /* danger red */
+  --quill-border: #2C2C2E;
+  /* charcoal border */
+  --quill-border-focus: #5BB98C;
+  --quill-green: #5BB98C;
   /* success green */
+  --quill-blue: #CBE1FD;
+  --quill-pink: #F7CDCD;
+  --quill-yellow: #FFE2B3;
 }
 
 body {
@@ -84,10 +87,10 @@ body {
 
 /* Premium Glow & Button */
 .quill-primary {
-  background: #8B5CF6 !important;
+  background: var(--quill-accent) !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(91, 185, 140, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
   border-radius: 16px;
 }
@@ -518,16 +521,16 @@ body {
 }
 
 .quill-sidebar-card.selected {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: #8B5CF6;
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.1);
+  background: rgba(91, 185, 140, 0.15);
+  border-color: var(--quill-accent);
+  box-shadow: 0 0 15px rgba(91, 185, 140, 0.1);
 }
 
 /* Redesigned New Note button styling */
 .quill-new-note-btn {
-  background: #8B5CF6 !important;
+  background: var(--quill-accent) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(91, 185, 140, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1) !important;
   border-radius: 16px;
   color: #FFFFFF !important;
@@ -643,12 +646,12 @@ body {
   left: 0;
   width: 12px;
   height: 12px;
-  background-color: #8B5CF6;
+  background-color: var(--quill-accent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 8px rgba(91, 185, 140, 0.5);
   transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
               height 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
               background-color 0.2s,
@@ -660,15 +663,15 @@ body {
 .custom-cursor.cursor-button {
   width: 40px;
   height: 40px;
-  background-color: rgba(139, 92, 246, 0.1);
-  border: 2px solid #8B5CF6;
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+  background-color: rgba(91, 185, 140, 0.1);
+  border: 2px solid var(--quill-accent);
+  box-shadow: 0 0 15px rgba(91, 185, 140, 0.2);
 }
 
 .custom-cursor.cursor-text {
   width: 2px;
   height: 20px;
-  background-color: #8B5CF6;
+  background-color: var(--quill-accent);
   border-radius: 0;
   box-shadow: none;
 }
@@ -677,7 +680,7 @@ body {
   width: 28px;
   height: 28px;
   background-color: transparent;
-  border: 2px solid #8B5CF6;
+  border: 2px solid var(--quill-accent);
   mix-blend-mode: difference;
 }
 
@@ -688,7 +691,7 @@ body {
   left: 50%;
   width: 4px;
   height: 4px;
-  background-color: #8B5CF6;
+  background-color: var(--quill-accent);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;

@@ -6,7 +6,7 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #0F172A;
+    background-color: #000000;
     overflow-x: hidden;
 }
 
@@ -34,25 +34,25 @@ code {
 
 @layer base {
     :root {
-        --background: 222 47% 11%;
+        --background: 0 0% 0%;
         --foreground: 210 40% 98%;
-        --card: 220 25% 10%;
+        --card: 240 2% 10%;
         --card-foreground: 210 40% 98%;
-        --popover: 220 25% 10%;
+        --popover: 240 2% 10%;
         --popover-foreground: 210 40% 98%;
-        --primary: 262 83% 76%;
+        --primary: 151 44% 54%;
         --primary-foreground: 0 0% 100%;
-        --secondary: 220 14% 16%;
+        --secondary: 240 2% 16%;
         --secondary-foreground: 210 40% 98%;
         --muted: 215 16% 47%;
         --muted-foreground: 215 20% 65%;
-        --accent: 262 83% 76%;
+        --accent: 151 44% 54%;
         --accent-foreground: 0 0% 100%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
-        --border: 217 19% 27%;
-        --input: 217 19% 27%;
-        --ring: 262 83% 76%;
+        --border: 240 2% 18%;
+        --input: 240 2% 18%;
+        --ring: 151 44% 54%;
         --radius: 1.5rem;
     }
 }

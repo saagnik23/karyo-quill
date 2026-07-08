@@ -282,7 +282,7 @@ function NotFound() {
         baseIntensity={0.2}
         hoverIntensity={0.5}
         enableHover={true}
-        color="#8B5CF6"
+        color="#5BB98C"
         fontSize="clamp(4rem, 15vw, 12rem)"
         clickEffect={true}
         glitchMode={true}
@@ -309,7 +309,7 @@ function App() {
   return (
     <BrowserRouter>
       <ClickSpark
-        sparkColor='#8B5CF6'
+        sparkColor='#CBE1FD'
         sparkSize={10}
         sparkRadius={18}
         sparkCount={8}
@@ -319,7 +319,7 @@ function App() {
           <TargetCursor
             targetSelector="button, [role='button'], textarea, input, .border-glow-card, select, .cursor-pointer, [data-testid='mode-select-trigger']"
             cursorColor="#ffffff"
-            cursorColorOnTarget="#8B5CF6"
+            cursorColorOnTarget="#5BB98C"
             hideDefaultCursor={true}
           />
           <BackgroundNetwork />

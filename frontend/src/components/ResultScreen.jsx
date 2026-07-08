@@ -47,7 +47,7 @@ function TypedText({ text, speed = 8, onComplete }) {
     <span className="text-[18px] leading-[1.7] text-[#CBD5E1] font-medium">
       {displayedText}
       {displayedText.length < text.length && (
-        <span className="typewriter-text ml-0.5 inline-block w-1.5 h-5 bg-[var(--quill-accent)] animate-pulse" />
+        <span className="typewriter-text ml-0.5 inline-block w-1.5 h-5 bg-[#5BB98C] animate-pulse" />
       )}
     </span>
   );
@@ -89,11 +89,11 @@ function categorizeFlag(flag) {
   } else {
     return {
       category: "Suggested Follow Ups",
-      color: "text-[var(--quill-accent)]",
-      bgHex: "#F5F0FF",
-      borderColorHex: "rgba(139, 92, 246, 0.25)",
-      glowColor: ["#8B5CF6"],
-      icon: <Info className="w-5 h-5 text-[var(--quill-accent)]" />,
+      color: "text-[#5BB98C]",
+      bgHex: "#EAF8F1",
+      borderColorHex: "rgba(91, 185, 140, 0.25)",
+      glowColor: ["#5BB98C"],
+      icon: <Info className="w-5 h-5 text-[#5BB98C]" />,
       explanation: "Recommended metrics or review checks to address in the next consult."
     };
   }
@@ -128,7 +128,7 @@ export function ResultScreen({
             type="button"
             data-testid="new-button"
             onClick={onNew}
-            className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#CBD5E1] hover:text-[#F8FAFC] transition-colors mb-2 bg-[#1E293B] border border-[#334155] rounded-xl px-3 py-1"
+            className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#CBD5E1] hover:text-[#F8FAFC] transition-colors mb-2 bg-[#1C1C1E] border border-[#2C2C2E] rounded-xl px-3 py-1"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             New Note
@@ -166,7 +166,7 @@ export function ResultScreen({
             data-testid="export-button"
             disabled={!approved}
             onClick={onExport}
-            className="inline-flex items-center gap-2 rounded-xl h-11 px-5 text-[14px] font-bold bg-[#1F2937] text-[#CBD5E1] border border-[#334155] hover:bg-[#273449] disabled:bg-[#1E293B] disabled:text-[#94A3B8]/40 disabled:border-[#334155] active:scale-[0.98] transition-all shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl h-11 px-5 text-[14px] font-bold bg-[#1C1C1E] text-[#CBD5E1] border border-[#2C2C2E] hover:bg-[#2C2C2E] disabled:bg-[#1C1C1E] disabled:text-[#94A3B8]/40 disabled:border-[#2C2C2E] active:scale-[0.98] transition-all shadow-sm"
           >
             <Copy className="w-4 h-4" strokeWidth={2} />
             {result.exportLabel}
@@ -175,14 +175,14 @@ export function ResultScreen({
       </div>
 
       {/* Confidence and Metrics Summary floating card */}
-      <div className="bg-[#1F2937] border border-[#334155] p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-[20px] select-none">
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.25)] rounded-[20px] select-none">
         
         {/* Metric 1: Clinical Confidence Dial */}
         <div className="flex items-center gap-4">
           <div className="confidence-dial relative w-12 h-12">
             <svg className="w-full h-full transform -rotate-90">
-              <circle cx="24" cy="24" r="20" className="stroke-[#334155] fill-none" strokeWidth="4" />
-              <circle cx="24" cy="24" r="20" className="stroke-[var(--quill-accent)] fill-none" strokeWidth="4" strokeDasharray="125" strokeDashoffset="7.5" />
+              <circle cx="24" cy="24" r="20" className="stroke-[#2C2C2E] fill-none" strokeWidth="4" />
+              <circle cx="24" cy="24" r="20" className="stroke-[#5BB98C] fill-none" strokeWidth="4" strokeDasharray="125" strokeDashoffset="7.5" />
             </svg>
             <span className="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#F8FAFC] font-mono">94%</span>
           </div>
@@ -196,10 +196,10 @@ export function ResultScreen({
         <div className="flex flex-col gap-1.5 w-full md:max-w-[240px]">
           <div className="flex justify-between text-[12px] font-bold">
             <span className="text-[#CBD5E1]">Documentation Completeness</span>
-            <span className="text-[var(--quill-accent)] font-mono">92%</span>
+            <span className="text-[#5BB98C] font-mono">92%</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-[#1E293B] overflow-hidden border border-[#334155]">
-            <div className="h-full bg-gradient-to-r from-[var(--quill-accent)] to-[#C9B5FF] rounded-full" style={{ width: '92%' }} />
+          <div className="w-full h-2 rounded-full bg-[#1C1C1E] overflow-hidden border border-[#2C2C2E]">
+            <div className="h-full bg-gradient-to-r from-[#5BB98C] to-[#CBE1FD] rounded-full" style={{ width: '92%' }} />
           </div>
         </div>
 
@@ -221,13 +221,13 @@ export function ResultScreen({
         {/* Left column: Original transcript panel */}
         <aside
           data-testid="transcript-panel"
-          className="bg-[#1F2937] border border-[#334155] rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] flex flex-col h-fit"
+          className="bg-[#1C1C1E] border border-[#2C2C2E] rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.25)] flex flex-col h-fit"
         >
-          <div className="px-6 pt-6 pb-4 border-b border-[#334155] flex items-center justify-between">
+          <div className="px-6 pt-6 pb-4 border-b border-[#2C2C2E] flex items-center justify-between">
             <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#94A3B8] select-none">
               Original transcript
             </p>
-            <span className="w-2 h-2 rounded-full bg-[var(--quill-accent)] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#5BB98C] animate-pulse" />
           </div>
           <div
             data-testid="transcript-content"
@@ -302,19 +302,19 @@ export function ResultScreen({
                 glowRadius={28}
                 glowIntensity={0.25}
                 animated={false}
-                backgroundColor="#1F2937"
-                colors={["#8B5CF6", "#38BDF8", "#A78BFA"]}
-                className="shadow-[0_10px_40px_rgba(0,0,0,0.15)]"
+                backgroundColor="#1C1C1E"
+                colors={["#5BB98C", "#CBE1FD", "#FFE2B3"]}
+                className="shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
               >
                 <div
                   data-testid={`section-card-${idx}`}
                   className="p-6 sm:p-8 relative"
                 >
-                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#334155] select-none">
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#2C2C2E] select-none">
                     <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8]">
                       {s.heading.includes("ICD-10") ? "Billing Codes" : "Clinical Record"}
                     </p>
-                    <span className="text-[11.5px] font-mono text-[var(--quill-accent)] font-bold">SOAP.{s.heading.substring(0, 3).toUpperCase()}</span>
+                    <span className="text-[11.5px] font-mono text-[#5BB98C] font-bold">SOAP.{s.heading.substring(0, 3).toUpperCase()}</span>
                   </div>
                   
                   {/* 30px Section Title, Weight 600 */}
@@ -334,7 +334,7 @@ export function ResultScreen({
                           <span
                             key={ci}
                             data-testid={`icd-pill-${ci}`}
-                            className="inline-flex items-center rounded-xl px-3.5 py-1.5 text-[12.5px] font-bold bg-[rgba(139,92,246,0.15)] text-[#CBD5E1] border border-[#8B5CF6]/35"
+                            className="inline-flex items-center rounded-xl px-3.5 py-1.5 text-[12.5px] font-bold bg-[rgba(91,185,140,0.15)] text-[#CBD5E1] border border-[#5BB98C]/35"
                           >
                             {trimmed}
                           </span>
@@ -359,9 +359,9 @@ export function ResultScreen({
           {result.suggestions && result.suggestions.length > 0 && typingIndex >= sections.length && (
             <div 
               data-testid="suggestions-card"
-              className="bg-[#1F2937] border border-[#334155] p-6 sm:p-8 rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] animate-[quill-rise_250ms_ease-out]"
+              className="bg-[#1C1C1E] border border-[#2C2C2E] p-6 sm:p-8 rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.25)] animate-[quill-rise_250ms_ease-out]"
             >
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#334155] select-none">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#2C2C2E] select-none">
                 <h3 className="text-[17px] text-[#F8FAFC] font-bold tracking-tight">
                   Suggested Action Items
                 </h3>
@@ -375,7 +375,7 @@ export function ResultScreen({
                   <li
                     key={idx}
                     data-testid={`suggestion-${idx}`}
-                    className="rounded-xl border border-[#334155] bg-[#1E293B] p-4.5 flex flex-col gap-1 transition-colors hover:border-[#475569]"
+                    className="rounded-xl border border-[#2C2C2E] bg-[#1C1C1E] p-4.5 flex flex-col gap-1 transition-colors hover:border-[#334155]"
                   >
                     <p className="text-[14px] font-bold text-[#F8FAFC]">
                       {sg.label}
