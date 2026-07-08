@@ -9,6 +9,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import { Button } from "./ui/button";
+import { BorderGlow } from "./BorderGlow";
 
 const RISK_KEYWORDS = ["interaction", "drug", "allergy", "warfarin", "amoxicillin"];
 
@@ -59,9 +60,9 @@ function categorizeFlag(flag) {
     return {
       category: "Medication Alerts",
       color: "text-[#EF4444]",
-      borderColor: "border-[#EF4444]/35",
-      bgClass: "bg-[#FFF0F0]",
-      glowClass: "shadow-[0_4px_12px_rgba(239,68,68,0.05)]",
+      bgHex: "#FFF0F0",
+      borderColorHex: "rgba(239, 68, 68, 0.25)",
+      glowColor: ["#EF4444"],
       icon: <ShieldAlert className="w-5 h-5 text-[#EF4444]" />,
       explanation: "Warfarin has severe drug interaction hazards. Check patient medication profile."
     };
@@ -69,9 +70,9 @@ function categorizeFlag(flag) {
     return {
       category: "Critical Risks",
       color: "text-[#EF4444]",
-      borderColor: "border-[#EF4444]/35",
-      bgClass: "bg-[#FFF0F0]",
-      glowClass: "shadow-[0_4px_12px_rgba(239,68,68,0.05)]",
+      bgHex: "#FFF0F0",
+      borderColorHex: "rgba(239, 68, 68, 0.25)",
+      glowColor: ["#EF4444"],
       icon: <AlertTriangle className="w-5 h-5 text-[#EF4444]" />,
       explanation: "A drug allergy query is mandatory prior to prescribing antibiotics."
     };
@@ -79,9 +80,9 @@ function categorizeFlag(flag) {
     return {
       category: "Missing Information",
       color: "text-[#F59E0B]",
-      borderColor: "border-[#F59E0B]/35",
-      bgClass: "bg-[#FFF6E7]",
-      glowClass: "shadow-[0_4px_12px_rgba(245,158,11,0.05)]",
+      bgHex: "#FFF6E7",
+      borderColorHex: "rgba(245, 158, 11, 0.25)",
+      glowColor: ["#F59E0B"],
       icon: <AlertCircle className="w-5 h-5 text-[#F59E0B]" />,
       explanation: "Key patient baseline information was not verbalized in the raw dialog."
     };
@@ -89,9 +90,9 @@ function categorizeFlag(flag) {
     return {
       category: "Suggested Follow Ups",
       color: "text-[var(--quill-accent)]",
-      borderColor: "border-[var(--quill-accent)]/35",
-      bgClass: "bg-[#F5F0FF]",
-      glowClass: "shadow-[0_4px_12px_rgba(177,138,247,0.05)]",
+      bgHex: "#F5F0FF",
+      borderColorHex: "rgba(139, 92, 246, 0.25)",
+      glowColor: ["#8B5CF6"],
       icon: <Info className="w-5 h-5 text-[var(--quill-accent)]" />,
       explanation: "Recommended metrics or review checks to address in the next consult."
     };
@@ -242,92 +243,115 @@ export function ResultScreen({
           data-testid="record-panel"
           className="flex flex-col gap-6"
         >
-          {/* Dynamic categorized alerts / Risk card panel */}
+          {/* Dynamic categorized alerts / Risk card panel wrapped inside BorderGlow */}
           {result.flags && result.flags.length > 0 && (
             <div className="flex flex-col gap-3">
               {result.flags.map((flag, idx) => {
                 const cardDetails = categorizeFlag(flag);
                 return (
-                  <div
+                  <BorderGlow
                     key={idx}
-                    data-testid={`gap-flag-${idx}`}
-                    className={`border ${cardDetails.borderColor} ${cardDetails.bgClass} ${cardDetails.glowClass} p-5 flex gap-4 transition-all duration-300 rounded-[20px]`}
+                    edgeSensitivity={20}
+                    borderRadius={20}
+                    glowRadius={24}
+                    glowIntensity={0.75}
+                    animated={false}
+                    backgroundColor={cardDetails.bgHex}
+                    borderColor={cardDetails.borderColorHex}
+                    colors={cardDetails.glowColor}
+                    className="shadow-sm transition-all duration-200 hover:scale-[1.01]"
                   >
-                    <div className="flex-shrink-0 mt-0.5">
-                      {cardDetails.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className={`text-[10px] font-bold uppercase tracking-wider ${cardDetails.color}`}>
-                          {cardDetails.category}
-                        </span>
-                        <span className="text-[10px] text-[#71717A] font-bold">Active Check</span>
+                    <div
+                      data-testid={`gap-flag-${idx}`}
+                      className="p-5 flex gap-4"
+                    >
+                      <div className="flex-shrink-0 mt-0.5">
+                        {cardDetails.icon}
                       </div>
-                      <h4 className="text-[15px] font-bold text-stone-900 mb-1 leading-snug">
-                        {flag}
-                      </h4>
-                      <p className="text-[13px] text-stone-700 leading-relaxed font-medium">
-                        {cardDetails.explanation}
-                      </p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ${cardDetails.color}`}>
+                            {cardDetails.category}
+                          </span>
+                          <span className="text-[10px] text-stone-500 font-bold">Active Check</span>
+                        </div>
+                        <h4 className="text-[15px] font-bold text-stone-900 mb-1 leading-snug">
+                          {flag}
+                        </h4>
+                        <p className="text-[13px] text-stone-700 leading-relaxed font-medium">
+                          {cardDetails.explanation}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </BorderGlow>
                 );
               })}
             </div>
           )}
 
-          {/* SOAP note Sections (Large white cards with 24px/28px corners) */}
+          {/* SOAP note Sections (Wrapped in BorderGlow, 0.25 low intensity) */}
           {sections.map((s, idx) => {
             const isVisible = idx <= typingIndex;
             if (!isVisible) return null;
 
             return (
-              <div
+              <BorderGlow
                 key={idx}
-                data-testid={`section-card-${idx}`}
-                className="bg-[#1F2937] border border-[#334155] p-6 sm:p-8 rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] animate-[quill-rise_250ms_ease-out]"
+                edgeSensitivity={20}
+                borderRadius={24}
+                glowRadius={28}
+                glowIntensity={0.25}
+                animated={false}
+                backgroundColor="#1F2937"
+                colors={["#8B5CF6", "#38BDF8", "#A78BFA"]}
+                className="shadow-[0_10px_40px_rgba(0,0,0,0.15)]"
               >
-                <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#334155] select-none">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8]">
-                    {s.heading.includes("ICD-10") ? "Billing Codes" : "Clinical Record"}
-                  </p>
-                  <span className="text-[11.5px] font-mono text-[var(--quill-accent)] font-bold">SOAP.{s.heading.substring(0, 3).toUpperCase()}</span>
-                </div>
-                
-                {/* 30px Section Title, Weight 600 */}
-                <h3 
-                  className="text-[#F8FAFC] font-semibold tracking-tight mb-4 select-none"
-                  style={{ fontSize: "30px", letterSpacing: "-0.03em" }}
+                <div
+                  data-testid={`section-card-${idx}`}
+                  className="p-6 sm:p-8 relative"
                 >
-                  {s.heading}
-                </h3>
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#334155] select-none">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8]">
+                      {s.heading.includes("ICD-10") ? "Billing Codes" : "Clinical Record"}
+                    </p>
+                    <span className="text-[11.5px] font-mono text-[var(--quill-accent)] font-bold">SOAP.{s.heading.substring(0, 3).toUpperCase()}</span>
+                  </div>
+                  
+                  {/* 30px Section Title, Weight 600 */}
+                  <h3 
+                    className="text-[#F8FAFC] font-semibold tracking-tight mb-4 select-none"
+                    style={{ fontSize: "30px", letterSpacing: "-0.03em" }}
+                  >
+                    {s.heading}
+                  </h3>
 
-                {s.heading.includes("ICD-10") ? (
-                  <div className="flex flex-wrap gap-2.5 mt-2">
-                    {s.content.split(";").map((code, ci) => {
-                      const trimmed = code.trim();
-                      if (!trimmed) return null;
-                      return (
-                        <span
-                          key={ci}
-                          data-testid={`icd-pill-${ci}`}
-                          className="inline-flex items-center rounded-xl px-3.5 py-1.5 text-[12.5px] font-bold bg-[rgba(139,92,246,0.15)] text-[#CBD5E1] border border-[#8B5CF6]/35"
-                        >
-                          {trimmed}
-                        </span>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="mt-1">
-                    <TypedText 
-                      text={s.content} 
-                      speed={5} 
-                      onComplete={handleSectionComplete} 
-                    />
-                  </div>
-                )}
-              </div>
+                  {s.heading.includes("ICD-10") ? (
+                    <div className="flex flex-wrap gap-2.5 mt-2">
+                      {s.content.split(";").map((code, ci) => {
+                        const trimmed = code.trim();
+                        if (!trimmed) return null;
+                        return (
+                          <span
+                            key={ci}
+                            data-testid={`icd-pill-${ci}`}
+                            className="inline-flex items-center rounded-xl px-3.5 py-1.5 text-[12.5px] font-bold bg-[rgba(139,92,246,0.15)] text-[#CBD5E1] border border-[#8B5CF6]/35"
+                          >
+                            {trimmed}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="mt-1">
+                      <TypedText 
+                        text={s.content} 
+                        speed={5} 
+                        onComplete={handleSectionComplete} 
+                      />
+                    </div>
+                  )}
+                </div>
+              </BorderGlow>
             );
           })}
 
