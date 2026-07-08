@@ -10,6 +10,7 @@ import { Sidebar } from "./components/Sidebar";
 import { BackgroundNetwork } from "./components/BackgroundNetwork";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { InteractiveCursor } from "./components/InteractiveCursor";
+import { ClickSpark } from "./components/ClickSpark";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 const API = `${BACKEND_URL}/api`;
@@ -229,56 +230,55 @@ function App() {
   }, [result, approved, mode]);
 
   return (
-    <div data-testid="quill-app" className="quill-app quill-app-shell relative">
-      <InteractiveCursor />
-      <BackgroundNetwork />
-      {screen !== SCREENS.PRINT && <TopBar />}
-      
-      {screen === SCREENS.PRINT ? (
-        <PrintView result={result} onExit={() => setScreen(SCREENS.RESULT)} />
-      ) : (
-        <div className="quill-app-body">
-          <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} activeSessionId={activeSessionId} />
-          
-          <div className="quill-main">
-            {loading ? (
-              <LoadingScreen />
-            ) : screen === SCREENS.INPUT ? (
-              <InputScreen
-                mode={mode}
-                setMode={setMode}
-                transcript={transcript}
-                setTranscript={setTranscript}
-                onGenerate={handleGenerate}
-                loading={loading}
-                apiBase={API}
-                micEnabled={micEnabled}
-              />
-            ) : screen === SCREENS.RESULT && result && (
-              <ResultScreen
-                transcript={transcript}
-                result={result}
-                approved={approved}
-                setApproved={setApproved}
-                onExport={handleExport}
-                onNew={handleNew}
-              />
-            )}
+    <ClickSpark
+      sparkColor='#8B5CF6'
+      sparkSize={10}
+      sparkRadius={18}
+      sparkCount={8}
+      duration={400}
+    >
+      <div data-testid="quill-app" className="quill-app quill-app-shell relative">
+        <InteractiveCursor />
+        <BackgroundNetwork />
+        {screen !== SCREENS.PRINT && <TopBar />}
+        
+        {screen === SCREENS.PRINT ? (
+          <PrintView result={result} onExit={() => setScreen(SCREENS.RESULT)} />
+        ) : (
+          <div className="quill-app-body">
+            <Sidebar onNew={handleNew} onSelectSession={handleSelectSession} activeSessionId={activeSessionId} />
+            
+            <div className="quill-main">
+              {loading ? (
+                <LoadingScreen />
+              ) : screen === SCREENS.INPUT ? (
+                <InputScreen
+                  mode={mode}
+                  setMode={setMode}
+                  transcript={transcript}
+                  setTranscript={setTranscript}
+                  onGenerate={handleGenerate}
+                  loading={loading}
+                  apiBase={API}
+                  micEnabled={micEnabled}
+                />
+              ) : (
+                <ResultScreen
+                  transcript={transcript}
+                  result={result}
+                  approved={approved}
+                  setApproved={setApproved}
+                  onExport={handleExport}
+                  onNew={handleNew}
+                />
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            background: "#0F172A",
-            color: "#FFF",
-            border: "1px solid #1E293B",
-          },
-        }}
-      />
-    </div>
+        <Toaster position="bottom-right" richColors toastOptions={{ className: "quill-toast" }} />
+      </div>
+    </ClickSpark>
   );
 }
 
