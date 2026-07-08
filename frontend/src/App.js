@@ -9,7 +9,7 @@ import { PrintView } from "./components/PrintView";
 import { Sidebar } from "./components/Sidebar";
 import { BackgroundNetwork } from "./components/BackgroundNetwork";
 import { LoadingScreen } from "./components/LoadingScreen";
-import { InteractiveCursor } from "./components/InteractiveCursor";
+import { TargetCursor } from "./components/TargetCursor";
 import { ClickSpark } from "./components/ClickSpark";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
@@ -238,7 +238,12 @@ function App() {
       duration={400}
     >
       <div data-testid="quill-app" className="quill-app quill-app-shell relative">
-        <InteractiveCursor />
+        <TargetCursor 
+          targetSelector="button, [role='button'], textarea, input, .border-glow-card, select, .cursor-pointer, [data-testid='mode-select-trigger']" 
+          cursorColor="#ffffff" 
+          cursorColorOnTarget="#8B5CF6" 
+          hideDefaultCursor={true}
+        />
         <BackgroundNetwork />
         {screen !== SCREENS.PRINT && <TopBar />}
         
