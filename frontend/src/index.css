@@ -6,7 +6,7 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #0B1220;
+    background-color: #F8F5ED;
     overflow-x: hidden;
 }
 
@@ -16,7 +16,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #FFFFFF;
+    color: #18181B;
     line-height: 1.6;
 }
 
@@ -27,26 +27,26 @@ code {
 
 @layer base {
     :root {
-        --background: 220 48% 8%;
-        --foreground: 0 0% 100%;
-        --card: 213 37% 15%;
-        --card-foreground: 214 32% 91%;
-        --popover: 213 37% 15%;
-        --popover-foreground: 0 0% 100%;
-        --primary: 200 100% 58%;
-        --primary-foreground: 220 48% 8%;
-        --secondary: 215 25% 27%;
-        --secondary-foreground: 0 0% 100%;
-        --muted: 215 16% 47%;
-        --muted-foreground: 215 20% 65%;
-        --accent: 199 89% 74%;
-        --accent-foreground: 220 48% 8%;
+        --background: 45 23% 95%;
+        --foreground: 240 5% 10%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 5% 10%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 5% 10%;
+        --primary: 262 83% 76%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 47 18% 93%;
+        --secondary-foreground: 240 5% 10%;
+        --muted: 240 5% 46%;
+        --muted-foreground: 240 5% 65%;
+        --accent: 262 83% 76%;
+        --accent-foreground: 0 0% 100%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
-        --border: 215 25% 27%;
-        --input: 215 25% 27%;
-        --ring: 200 100% 58%;
-        --radius: 1rem;
+        --border: 48 14% 89%;
+        --input: 48 14% 89%;
+        --ring: 262 83% 76%;
+        --radius: 1.5rem;
     }
 }
 
@@ -54,6 +54,7 @@ code {
     * {
         @apply border-border;
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -64,7 +65,7 @@ code {
         display: contents !important;
     }
 
-    [data-debug-wrapper="true"] > * {
+    [data-debug-wrapper="true"]>* {
         margin-left: inherit;
         margin-right: inherit;
         margin-top: inherit;

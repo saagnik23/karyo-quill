@@ -16,8 +16,8 @@ const StatusDot = ({ status }) => {
     green: "bg-[#22c55e] shadow-[0_0_8px_#22c55e]",
   };
   return (
-    <span 
-      className={`block w-2.5 h-2.5 rounded-full ${colors[status] || colors.green}`} 
+    <span
+      className={`block w-2.5 h-2.5 rounded-full ${colors[status] || colors.green}`}
       aria-hidden="true"
     />
   );
@@ -27,7 +27,7 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
   return (
     <aside className="quill-sidebar no-print select-none">
       {/* New Note Button */}
-      <button 
+      <button
         onClick={onNew}
         className="quill-new-note-btn w-full flex items-center gap-2.5 justify-center text-white font-semibold rounded-xl px-4 py-3 shadow-md active:scale-[0.98] mb-8"
       >
@@ -44,8 +44,8 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
           {MOCK_SESSIONS.map((session) => {
             const isSelected = activeSessionId === session.id;
             return (
-              <div 
-                key={session.id} 
+              <div
+                key={session.id}
                 onClick={() => onSelectSession && onSelectSession(session.id)}
                 className={`quill-sidebar-card ${isSelected ? "selected" : ""}`}
               >

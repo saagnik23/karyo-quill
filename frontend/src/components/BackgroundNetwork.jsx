@@ -90,21 +90,21 @@ export function BackgroundNetwork() {
   }, []);
 
   return (
-    <div 
-      className="absolute inset-0 pointer-events-none overflow-hidden" 
+    <div
+      className="absolute inset-0 pointer-events-none overflow-hidden"
       style={{ zIndex: 0 }}
     >
       {/* Subtle floating mesh gradient background */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
           background: "radial-gradient(circle at 10% 20%, rgba(40, 182, 255, 0.04) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(125, 211, 252, 0.03) 0%, transparent 40%)",
           mixBlendMode: "screen"
         }}
       />
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 w-full h-full block opacity-[0.7]" 
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full block opacity-[0.7]"
         style={{ mixBlendMode: "screen" }}
       />
     </div>
