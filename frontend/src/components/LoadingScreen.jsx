@@ -34,10 +34,10 @@ export function LoadingScreen() {
   }, []);
 
   return (
-    <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center py-16 px-4 animate-[quill-rise_350ms_ease-out]">
+    <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center py-16 px-4 animate-[quill-rise_250ms_ease-out]">
       {/* Visual Header */}
       <div className="flex items-center gap-3 mb-8 select-none">
-        <h2 className="text-[22px] font-bold text-[#18181B] tracking-tight">
+        <h2 className="text-[22px] font-bold text-[#F8FAFC] tracking-tight">
           AI is analyzing
         </h2>
         {/* Typing dots indicator */}
@@ -48,8 +48,8 @@ export function LoadingScreen() {
         </div>
       </div>
 
-      {/* Timeline Panel (White floating paper card style) */}
-      <div className="w-full bg-[#FFFFFF] border border-[#E7E5DD] p-8 flex flex-col gap-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.05)] rounded-[24px] relative overflow-hidden">
+      {/* Timeline Panel */}
+      <div className="w-full bg-[#1F2937] border border-[#334155] p-8 flex flex-col gap-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-[20px] relative overflow-hidden">
         {/* Soft radial backdrop gradient */}
         <div className="absolute -top-12 -right-12 w-40 h-40 bg-[var(--quill-accent)]/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -60,12 +60,12 @@ export function LoadingScreen() {
           return (
             <div
               key={idx}
-              className={`flex items-center justify-between py-2.5 border-b border-[#ECEAE2] last:border-0 transition-all duration-300 ${
+              className={`flex items-center justify-between py-2.5 border-b border-[#334155]/50 last:border-0 transition-all duration-300 ${
                 isCompleted 
-                  ? "text-[var(--quill-green)] opacity-90" 
+                  ? "text-[var(--quill-green)] opacity-95" 
                   : isActive 
                   ? "text-[var(--quill-accent)] font-semibold opacity-100" 
-                  : "text-[var(--quill-body)] opacity-35"
+                  : "text-[#CBD5E1] opacity-30"
               }`}
             >
               <span className="text-[14.5px] font-medium tracking-wide">{stage}</span>
@@ -79,7 +79,7 @@ export function LoadingScreen() {
                 ) : isActive ? (
                   <Loader2 className="w-4 h-4 text-[var(--quill-accent)] animate-spin" />
                 ) : (
-                  <div className="w-4 h-4 rounded-full border border-[#E7E5DD]" />
+                  <div className="w-4 h-4 rounded-full border border-[#334155]" />
                 )}
               </div>
             </div>

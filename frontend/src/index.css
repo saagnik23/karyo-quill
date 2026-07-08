@@ -6,18 +6,25 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #F8F5ED;
+    background-color: #0F172A;
     overflow-x: hidden;
 }
 
 body {
     font-family:
-        "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #18181B;
+    color: #F8FAFC;
     line-height: 1.6;
+}
+
+/* Hide default cursor everywhere for screen devices to support custom cursor */
+@media screen {
+    * {
+        cursor: none !important;
+    }
 }
 
 code {
@@ -27,24 +34,24 @@ code {
 
 @layer base {
     :root {
-        --background: 45 23% 95%;
-        --foreground: 240 5% 10%;
-        --card: 0 0% 100%;
-        --card-foreground: 240 5% 10%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 240 5% 10%;
+        --background: 222 47% 11%;
+        --foreground: 210 40% 98%;
+        --card: 220 25% 10%;
+        --card-foreground: 210 40% 98%;
+        --popover: 220 25% 10%;
+        --popover-foreground: 210 40% 98%;
         --primary: 262 83% 76%;
         --primary-foreground: 0 0% 100%;
-        --secondary: 47 18% 93%;
-        --secondary-foreground: 240 5% 10%;
-        --muted: 240 5% 46%;
-        --muted-foreground: 240 5% 65%;
+        --secondary: 220 14% 16%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 215 16% 47%;
+        --muted-foreground: 215 20% 65%;
         --accent: 262 83% 76%;
         --accent-foreground: 0 0% 100%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
-        --border: 48 14% 89%;
-        --input: 48 14% 89%;
+        --border: 217 19% 27%;
+        --input: 217 19% 27%;
         --ring: 262 83% 76%;
         --radius: 1.5rem;
     }

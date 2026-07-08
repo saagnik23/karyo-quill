@@ -9,6 +9,7 @@ import { PrintView } from "./components/PrintView";
 import { Sidebar } from "./components/Sidebar";
 import { BackgroundNetwork } from "./components/BackgroundNetwork";
 import { LoadingScreen } from "./components/LoadingScreen";
+import { InteractiveCursor } from "./components/InteractiveCursor";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 const API = `${BACKEND_URL}/api`;
@@ -229,6 +230,7 @@ function App() {
 
   return (
     <div data-testid="quill-app" className="quill-app quill-app-shell relative">
+      <InteractiveCursor />
       <BackgroundNetwork />
       {screen !== SCREENS.PRINT && <TopBar />}
       

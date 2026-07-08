@@ -11,13 +11,13 @@ export const MOCK_SESSIONS = [
 
 const StatusDot = ({ status }) => {
   const colors = {
-    red: "bg-[#ef4444] shadow-[0_0_8px_#ef4444]",
-    amber: "bg-[#f59e0b] shadow-[0_0_8px_#f59e0b]",
-    green: "bg-[#22c55e] shadow-[0_0_8px_#22c55e]",
+    red: "bg-[#EF4444] shadow-[0_0_6px_#EF4444]",
+    amber: "bg-[#F59E0B] shadow-[0_0_6px_#F59E0B]",
+    green: "bg-[#22C55E] shadow-[0_0_6px_#22C55E]",
   };
   return (
-    <span
-      className={`block w-2.5 h-2.5 rounded-full ${colors[status] || colors.green}`}
+    <span 
+      className={`block w-2 h-2 rounded-full ${colors[status] || colors.green}`} 
       aria-hidden="true"
     />
   );
@@ -26,37 +26,37 @@ const StatusDot = ({ status }) => {
 export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
   return (
     <aside className="quill-sidebar no-print select-none">
-      {/* New Note Button */}
-      <button
+      {/* New Note button */}
+      <button 
         onClick={onNew}
-        className="quill-new-note-btn w-full flex items-center gap-2.5 justify-center text-white font-semibold rounded-xl px-4 py-3 shadow-md active:scale-[0.98] mb-8"
+        className="quill-new-note-btn w-full flex items-center gap-2 justify-center text-white font-semibold rounded-xl px-4 py-3.5 shadow-md active:scale-[0.98] mb-6"
       >
-        <Plus className="w-5 h-5" />
+        <Plus className="w-4 h-4" />
         New Note
       </button>
 
       {/* Recent Sessions list */}
       <div className="flex-1">
-        <h3 className="text-[11px] font-bold text-[var(--quill-muted)] uppercase tracking-wider mb-4 px-1.5 flex items-center gap-1.5">
+        <h3 className="text-[11px] font-bold text-[var(--quill-muted)] uppercase tracking-wider mb-3 px-1.5 flex items-center gap-1.5">
           Recent Sessions
         </h3>
         <div className="space-y-2">
           {MOCK_SESSIONS.map((session) => {
             const isSelected = activeSessionId === session.id;
             return (
-              <div
-                key={session.id}
+              <div 
+                key={session.id} 
                 onClick={() => onSelectSession && onSelectSession(session.id)}
                 className={`quill-sidebar-card ${isSelected ? "selected" : ""}`}
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
                     {/* Patient Initials Circle */}
-                    <div className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[11px] font-bold text-white">
+                    <div className="w-6.5 h-6.5 rounded-full bg-[#1E293B] border border-[#334155] flex items-center justify-center text-[10px] font-bold text-[var(--quill-accent)]">
                       {session.initials}
                     </div>
-                    {/* Patient Name details */}
-                    <span className="text-[13.5px] font-semibold text-white truncate max-w-[120px]">
+                    {/* Patient Name */}
+                    <span className="text-[13px] font-semibold text-[#F8FAFC] truncate max-w-[130px]">
                       {session.patientName}
                     </span>
                   </div>
@@ -64,17 +64,17 @@ export function Sidebar({ onNew, onSelectSession, activeSessionId }) {
                   <StatusDot status={session.status} />
                 </div>
 
-                <div className="flex items-center justify-between text-[11.5px] text-[var(--quill-body)] mt-1.5 pt-1.5 border-t border-white/5">
-                  {/* Doc Avatar representation */}
-                  <div className="flex items-center gap-1">
-                    <User className="w-3.5 h-3.5 text-[var(--quill-accent)]" />
-                    <span className="font-mono">Dr. {session.docInitials}</span>
+                <div className="flex items-center justify-between text-[11px] text-[#CBD5E1] mt-2 pt-2 border-t border-[#334155]/40">
+                  {/* Doc Avatar */}
+                  <div className="flex items-center gap-1 font-semibold text-stone-400">
+                    <User className="w-3 h-3 text-[var(--quill-accent)]" />
+                    <span>Dr. {session.docInitials}</span>
                   </div>
 
                   {/* Timestamp */}
-                  <div className="flex items-center gap-1 opacity-80">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>{session.date} {session.time}</span>
+                  <div className="flex items-center gap-1 opacity-70">
+                    <Clock className="w-3 h-3 text-stone-500" />
+                    <span>{session.date}</span>
                   </div>
                 </div>
               </div>

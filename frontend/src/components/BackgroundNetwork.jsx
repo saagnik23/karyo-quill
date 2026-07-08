@@ -18,65 +18,54 @@ export function BackgroundNetwork() {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    const particles = [];
-    const particleCount = 45;
-    const connectionDistance = 120;
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.35;
-        this.vy = (Math.random() - 0.5) * 0.35;
-        this.radius = Math.random() * 1.5 + 1;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(40, 182, 255, 0.25)";
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
+    // Very subtle floating particles
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      radius: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.12 + 0.03
+    }));
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw connections
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        p1.update();
-        p1.draw();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.08;
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(40, 182, 255, ${alpha})`;
-            ctx.lineWidth = 0.85;
-            ctx.stroke();
-          }
-        }
+      // Draw subtle grid (opacity ~3%)
+      ctx.strokeStyle = "rgba(51, 65, 85, 0.04)";
+      ctx.lineWidth = 1;
+      const gridSize = 48;
+      
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
       }
+
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Draw particles (opacity ~4%)
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap boundaries
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.fillStyle = `rgba(139, 92, 246, ${p.alpha})`; // Lavender particles
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
 
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -90,22 +79,19 @@ export function BackgroundNetwork() {
   }, []);
 
   return (
-    <div
-      className="absolute inset-0 pointer-events-none overflow-hidden"
+    <div 
+      className="absolute inset-0 pointer-events-none overflow-hidden" 
       style={{ zIndex: 0 }}
     >
-      {/* Subtle floating mesh gradient background */}
-      <div
+      <div 
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(circle at 10% 20%, rgba(40, 182, 255, 0.04) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(125, 211, 252, 0.03) 0%, transparent 40%)",
-          mixBlendMode: "screen"
+          background: "linear-gradient(180deg, #0F172A 0%, #0F172A 100%)",
         }}
       />
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full block opacity-[0.7]"
-        style={{ mixBlendMode: "screen" }}
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full block" 
       />
     </div>
   );
