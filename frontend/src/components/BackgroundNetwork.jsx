@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { MagicRings } from "./MagicRings";
 
 export function BackgroundNetwork() {
   const canvasRef = useRef(null);
@@ -32,7 +33,7 @@ export function BackgroundNetwork() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw subtle grid (opacity ~3%)
-      ctx.strokeStyle = "rgba(51, 65, 85, 0.04)";
+      ctx.strokeStyle = "rgba(51, 65, 85, 0.03)";
       ctx.lineWidth = 1;
       const gridSize = 48;
       
@@ -80,19 +81,49 @@ export function BackgroundNetwork() {
 
   return (
     <div 
-      className="absolute inset-0 pointer-events-none overflow-hidden" 
+      className="fixed inset-0 overflow-hidden" 
       style={{ zIndex: 0 }}
     >
+      {/* Base deep slate color */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background: "linear-gradient(180deg, #0F172A 0%, #0F172A 100%)",
         }}
       />
+      
+      {/* Canvas for grid and particles */}
       <canvas 
         ref={canvasRef} 
-        className="absolute inset-0 w-full h-full block" 
+        className="absolute inset-0 w-full h-full block pointer-events-none" 
       />
+
+      {/* Full-screen MagicRings WebGL shader background (10% subtle opacity) */}
+      <div className="absolute inset-0 pointer-events-auto opacity-10">
+        <MagicRings
+          color="#8B5CF6"
+          colorTwo="#38BDF8"
+          ringCount={6}
+          speed={0.5}
+          attenuation={10}
+          lineThickness={1.5}
+          baseRadius={0.35}
+          radiusStep={0.1}
+          scaleRate={0.08}
+          opacity={1.0}
+          blur={0}
+          noiseAmount={0.03}
+          rotation={15}
+          ringGap={1.5}
+          fadeIn={0.7}
+          fadeOut={0.5}
+          followMouse={true}
+          mouseInfluence={0.08}
+          hoverScale={1.1}
+          parallax={0.02}
+          clickBurst={true}
+        />
+      </div>
     </div>
   );
 }

@@ -10,7 +10,6 @@ import {
 import { Button } from "./ui/button";
 import { MicRecorder } from "./MicRecorder";
 import { BorderGlow } from "./BorderGlow";
-import { MagicRings } from "./MagicRings";
 import { MODES, SAMPLES } from "../lib/samples";
 
 export function InputScreen({
@@ -171,44 +170,21 @@ export function InputScreen({
 
                 {/* Minimalist Empty State Overlay */}
                 {(!transcript || transcript.trim().length === 0) && (
-                  <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 text-center select-none z-0 overflow-hidden">
-                  {/* Interactive concentric rings behind the mic */}
-                  <div className="absolute inset-0 opacity-40 pointer-events-auto">
-                    <MagicRings
-                      color="#8B5CF6"
-                      colorTwo="#38BDF8"
-                      ringCount={5}
-                      speed={0.8}
-                      attenuation={8}
-                      lineThickness={1.5}
-                      baseRadius={0.28}
-                      radiusStep={0.08}
-                      scaleRate={0.06}
-                      opacity={0.35}
-                      blur={0}
-                      noiseAmount={0.05}
-                      followMouse={true}
-                      mouseInfluence={0.15}
-                      hoverScale={1.1}
-                      parallax={0.03}
-                      clickBurst={true}
-                    />
-                  </div>
-
-                  <div className="w-12 h-12 rounded-full bg-[#1E293B] flex items-center justify-center mb-3.5 border border-[var(--quill-accent)]/20 shadow-md relative z-10">
+                <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 text-center select-none z-0">
+                  <div className="w-12 h-12 rounded-full bg-[var(--quill-accent-soft)] flex items-center justify-center mb-3.5 border border-[var(--quill-accent)]/15">
                     <Mic className="w-5 h-5 text-[var(--quill-accent)] animate-pulse" />
                   </div>
                   
-                  {/* Subtle Waveform */}
-                  <div className="flex items-center gap-1.5 justify-center mb-3 relative z-10">
+                  {/* Subtle Lavender Waveform */}
+                  <div className="flex items-center gap-1.5 justify-center mb-3">
                     <span className="w-1 h-3 rounded-full bg-[var(--quill-accent)]/30 animate-[waveform-jump_0.75s_ease-in-out_infinite_alternate]" />
                     <span className="w-1 h-6 rounded-full bg-[var(--quill-accent)]/60 animate-[waveform-jump_0.75s_ease-in-out_infinite_alternate_0.15s]" />
                     <span className="w-1 h-4 rounded-full bg-[var(--quill-accent)]/45 animate-[waveform-jump_0.75s_ease-in-out_infinite_alternate_0.3s]" />
                     <span className="w-1 h-2 rounded-full bg-[var(--quill-accent)]/20 animate-[waveform-jump_0.75s_ease-in-out_infinite_alternate_0.1s]" />
                   </div>
 
-                  <h4 className="text-[14px] font-bold text-[#F8FAFC] mb-1 font-serif relative z-10">Capture Consultation</h4>
-                  <p className="text-[12.5px] text-[var(--quill-body)] max-w-sm relative z-10">
+                  <h4 className="text-[14px] font-bold text-[#F8FAFC] mb-1 font-serif">Capture Consultation</h4>
+                  <p className="text-[12.5px] text-[var(--quill-body)] max-w-sm">
                     Start speaking or paste your consultation transcript...
                   </p>
                 </div>
